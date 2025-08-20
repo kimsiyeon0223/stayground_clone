@@ -77,7 +77,7 @@ const accommodationData = [
 
 const SliderContainer = styled.div`
   display: flex;
-  /* margin: 0 210px; */
+  margin: 0 210px;
   height: 50vh;
   background-color: #ececec;
   padding: 70px 50px;
