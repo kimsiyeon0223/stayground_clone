@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 interface AccommodationCardProps {
+  id: number
   image: string
   name: string
   location: string
@@ -91,6 +93,7 @@ const PriceUnit = styled.span`
 `
 
 const AccommodationCard: React.FC<AccommodationCardProps> = ({
+  id,
   image,
   name,
   location,
@@ -98,8 +101,14 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
   price,
   hasPromotion = false
 }) => {
+  const router = useRouter()
+
+  const handleClick = () => {
+    router.push(`/accommodation/${id}`)
+  }
+
   return (
-    <CardContainer>
+    <CardContainer onClick={handleClick}>
       <ImageContainer>
         <Image imageUrl={image} />
         {hasPromotion && <PromotionTag>PROMOTION</PromotionTag>}

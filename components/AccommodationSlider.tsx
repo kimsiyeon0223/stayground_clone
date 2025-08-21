@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 // 숙소 더미 데이터
 const accommodationData = [
@@ -194,6 +195,12 @@ const SlideImage = styled.div<{ imageUrl: string }>`
   background-image: url(${props => props.imageUrl});
   background-size: cover;
   border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 `
 
 
@@ -203,6 +210,7 @@ const SlideImage = styled.div<{ imageUrl: string }>`
 const AccommodationSlider: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     if (!isAutoPlay) return
@@ -222,6 +230,10 @@ const AccommodationSlider: React.FC = () => {
   const handleNextClick = () => {
     setIsAutoPlay(false)
     setCurrentIndex(prev => (prev + 1) % accommodationData.length)
+  }
+
+  const handleSlideClick = (id: number) => {
+    router.push(`/accommodation/${id}`)
   }
 
   const currentAccommodation = accommodationData[currentIndex]
@@ -256,7 +268,10 @@ const AccommodationSlider: React.FC = () => {
         <SlideContainer currentIndex={currentIndex}>
           {accommodationData.map((accommodation, index) => (
             <Slide key={accommodation.id}>
-              <SlideImage imageUrl={accommodation.image} />
+              <SlideImage 
+                imageUrl={accommodation.image} 
+                onClick={() => handleSlideClick(accommodation.id)}
+              />
             </Slide>
           ))}
         </SlideContainer>

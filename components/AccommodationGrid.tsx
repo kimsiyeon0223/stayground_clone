@@ -44,6 +44,7 @@ const AccommodationGrid: React.FC = () => {
       {accommodationData.map((accommodation) => (
         <AccommodationCard
           key={accommodation.id}
+          id={accommodation.id}
           image={accommodation.image}
           name={accommodation.name}
           location={accommodation.location}

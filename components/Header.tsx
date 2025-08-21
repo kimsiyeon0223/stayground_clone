@@ -4,13 +4,14 @@ import SearchFilter from './SearchFilter'
 
 interface HeaderProps {
   isScrolled?: boolean;
+  isDetailPage?: boolean;
 }
 
 const HeaderContainer = styled.header<HeaderProps>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: ${props => props.isDetailPage ? 'static' : 'fixed'};
+  top: ${props => props.isDetailPage ? 'auto' : '0'};
+  left: ${props => props.isDetailPage ? 'auto' : '0'};
+  right: ${props => props.isDetailPage ? 'auto' : '0'};
   z-index: 1000;
   background: ${props => props.isScrolled ? 'white' : 'transparent'};
   width: 100%;
@@ -199,7 +200,7 @@ const HeaderSearchFilter = styled.div<HeaderProps>`
   } 
 `
 
-const Header: React.FC<HeaderProps> = ({ isScrolled = false }) => {
+const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = false }) => {
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [isLanguageModalVisible, setIsLanguageModalVisible] = React.useState(false)
   const [selectedLanguage, setSelectedLanguage] = React.useState('KOR')
@@ -244,7 +245,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false }) => {
 
 
   return (
-    <HeaderContainer isScrolled={isScrolled}>
+    <HeaderContainer isScrolled={isScrolled} isDetailPage={isDetailPage}>
       <PromoBanner>
         썸머 페스타 2만 원 쿠폰 받기
       </PromoBanner>
