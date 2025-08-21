@@ -1,14 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
+import SearchFilter from './SearchFilter'
 
-const HeaderContainer = styled.header`
+interface HeaderProps {
+  isScrolled?: boolean;
+}
+
+const HeaderContainer = styled.header<HeaderProps>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background: transparent;
+  background: ${props => props.isScrolled ? 'white' : 'transparent'};
   width: 100%;
+  transition: background-color 0.3s ease;
 `
 
 const PromoBanner = styled.div`
@@ -20,19 +26,22 @@ const PromoBanner = styled.div`
   font-weight: 500;
 `
 
-const MainHeader = styled.div`
+const MainHeader = styled.div<HeaderProps>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 20px 210px;
-  background: transparent;
+  background: ${props => props.isScrolled ? 'white' : 'transparent'};
+  transition: background-color 0.3s ease;
+  gap: 40px;
 `
 
-const Logo = styled.div`
-  color: white;
+const Logo = styled.div<HeaderProps>`
+  color: ${props => props.isScrolled ? '#333' : 'white'};
   font-size: 24px;
   font-weight: bold;
   line-height: 1.2;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
   
   .stay {
     display: block;
@@ -47,45 +56,51 @@ const Navigation = styled.nav`
   display: flex;
   align-items: center;
   gap: 40px;
+  flex: 1;
+  justify-content: flex-end;
 `
 
-const NavLinks = styled.div`
+const NavLinks = styled.div<HeaderProps>`
   display: flex;
   gap: 30px;
+  flex-shrink: 0;
   
   a {
-    color: white;
+    color: ${props => props.isScrolled ? '#333' : 'white'};
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
-    transition: opacity 0.2s;
+    transition: color 0.3s ease;
     
   }
 `
 
 const LoginContainer = styled.div`
   position: relative;
+  flex-shrink: 0;
 `
 
-const LoginButton = styled.button`
+const LoginButton = styled.button<HeaderProps>`
   background: transparent;
-  border: 1px solid white;
-  color: white;
+  border: 1px solid ${props => props.isScrolled ? '#333' : 'white'};
+  color: ${props => props.isScrolled ? '#333' : 'white'};
   padding: 8px 20px;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 `
 
-const LanguageSelector = styled.div`
+const LanguageSelector = styled.div<HeaderProps>`
   display: flex;
   align-items: center;
   gap: 8px;
-  color: white;
+  color: ${props => props.isScrolled ? '#333' : 'white'};
   font-size: 14px;
   cursor: pointer;
   position: relative;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
 `
 
 const LoginModal = styled.div`
@@ -172,7 +187,19 @@ const LanguageItem = styled.div`
   }
 `
 
-const Header: React.FC = () => {
+const HeaderSearchFilter = styled.div<HeaderProps>`
+  opacity: ${props => props.isScrolled ? 1 : 0};
+  visibility: ${props => props.isScrolled ? 'visible' : 'hidden'};
+  transition: all 0.3s ease;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  > div {
+    padding: 0;
+  } 
+`
+
+const Header: React.FC<HeaderProps> = ({ isScrolled = false }) => {
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [isLanguageModalVisible, setIsLanguageModalVisible] = React.useState(false)
   const [selectedLanguage, setSelectedLanguage] = React.useState('KOR')
@@ -217,19 +244,23 @@ const Header: React.FC = () => {
 
 
   return (
-    <HeaderContainer>
+    <HeaderContainer isScrolled={isScrolled}>
       <PromoBanner>
         썸머 페스타 2만 원 쿠폰 받기
       </PromoBanner>
       
-      <MainHeader>
-        <Logo>
+      <MainHeader isScrolled={isScrolled}>
+        <Logo isScrolled={isScrolled}>
           <span className="stay">STAY</span>
           <span className="ground">GROUND.</span>
         </Logo>
         
+        <HeaderSearchFilter isScrolled={isScrolled}>
+          <SearchFilter />
+        </HeaderSearchFilter>
+        
         <Navigation>
-          <NavLinks>
+          <NavLinks isScrolled={isScrolled}>
             <a href="/stay">스테이</a>
             <a href="/promotion">프로모션</a>
             <a href="/earlybird">얼리버드</a>
@@ -241,7 +272,7 @@ const Header: React.FC = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <LoginButton>
+            <LoginButton isScrolled={isScrolled}>
               로그인
             </LoginButton>
             <LoginModal 
@@ -254,7 +285,7 @@ const Header: React.FC = () => {
             </LoginModal>
           </LoginContainer>
           
-          <LanguageSelector onClick={handleLanguageClick}>
+          <LanguageSelector isScrolled={isScrolled} onClick={handleLanguageClick}>
             <span style={{ fontSize: '16px' }}>🌐</span>
             <span>{selectedLanguage}</span>
             <LanguageModal className={isLanguageModalVisible ? 'visible' : ''}>

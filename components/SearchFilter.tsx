@@ -19,7 +19,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 40px 0;
-  background: #f5f5f5;
   position: relative;
 `
 

@@ -6,7 +6,7 @@ const GridContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 30px;
-  padding: 60px 210px;
+  padding: 0 210px;
   background: white;
 `
 
