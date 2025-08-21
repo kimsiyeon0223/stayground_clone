@@ -84,12 +84,15 @@ const MainContent = styled.main`
   /* padding-top: 100px; */
 `
 
-const SectionHeader = styled.div`
+const SectionHeader = styled.div<{ isVisible: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 160px 0 40px 0;
   padding: 0 210px;
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${props => props.isVisible ? 0 : '30px'});
+  transition: all 0.8s ease;
 `
 
 const SectionTitle = styled.h2`
@@ -99,12 +102,15 @@ const SectionTitle = styled.h2`
   margin: 0;
 `
 
-const PromotionSectionHeader = styled.div`
+const PromotionSectionHeader = styled.div<{ isVisible: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 0 40px 0;
   padding: 0 210px;
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${props => props.isVisible ? 0 : '30px'});
+  transition: all 0.8s ease;
 `
 
 const PromotionSectionTitle = styled.h2`
@@ -114,16 +120,22 @@ const PromotionSectionTitle = styled.h2`
   margin: 0;
 `
 
-const MagazineSection = styled.div`
+const MagazineSection = styled.div<{ isVisible: boolean }>`
   padding: 160px 210px;
   background: white;
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${props => props.isVisible ? 0 : '50px'});
+  transition: all 0.8s ease;
 `
 
-const MagazineHeader = styled.div`
+const MagazineHeader = styled.div<{ isVisible: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${props => props.isVisible ? 0 : '30px'});
+  transition: all 0.8s ease;
 `
 
 const MagazineSectionTitle = styled.h2`
@@ -145,10 +157,13 @@ const ViewAllButton = styled.button`
 
 `
 
-const PromotionSection = styled.div`
+const PromotionSection = styled.div<{ isVisible: boolean }>`
   padding: 60px 0 60px 0;
   background: #ebebeb;
   margin-top: 100px;
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${props => props.isVisible ? 0 : '50px'});
+  transition: all 0.8s ease;
 `
 
 const MagazineGrid = styled.div`
@@ -204,11 +219,20 @@ const MagazineTitle = styled.h3`
 
 const Home = () => {
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const [visibleSections, setVisibleSections] = React.useState({
+    onlyStayground: false,
+    pick: false,
+    earlybird: false,
+    checkInTravel: false,
+    promotion: false,
+    magazine: false
+  })
 
+  // 스크롤 이벤트 핸들러
   React.useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY
-      const heroHeight = window.innerHeight * 0.95 // HeroSection의 높이 (95vh)
+      const heroHeight = window.innerHeight * 0.95
       
       if (scrollPosition > heroHeight * 0.5) {
         setIsScrolled(true)
@@ -217,8 +241,36 @@ const Home = () => {
       }
     }
 
+    // Intersection Observer 설정
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute('data-section')
+          if (sectionId) {
+            setVisibleSections(prev => ({
+              ...prev,
+              [sectionId]: true
+            }))
+          }
+        }
+      })
+    }, observerOptions)
+
+    // 각 섹션에 observer 연결
+    const sections = document.querySelectorAll('[data-section]')
+    sections.forEach(section => observer.observe(section))
+
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
+    }
   }, [])
   // MAGAZINE 섹션 데이터
   const magazineData = [
@@ -260,56 +312,102 @@ const Home = () => {
       </HeroSection>
       
       <MainContent>
-        <SectionHeader>
-          <SectionTitle>ONLY STAYGROUND</SectionTitle>
-          <ViewAllButton>전체보기 &gt;</ViewAllButton>
-        </SectionHeader>
-        <AccommodationGrid />
-        
-        <AccommodationSlider />
-        
-        <SectionHeader>
-          <SectionTitle>EARLYBIRD</SectionTitle>
-          <ViewAllButton>전체보기 &gt;</ViewAllButton>
-        </SectionHeader>
-        <div style={{padding: '0 210px'}}>
-          <ImageOverlay />
+        <div data-section="onlyStayground">
+          <SectionHeader isVisible={visibleSections.onlyStayground}>
+            <SectionTitle>ONLY STAYGROUND</SectionTitle>
+            <ViewAllButton>전체보기 &gt;</ViewAllButton>
+          </SectionHeader>
+          <div style={{
+            opacity: visibleSections.onlyStayground ? 1 : 0,
+            transform: `translateY(${visibleSections.onlyStayground ? 0 : '50px'})`,
+            transition: 'all 0.8s ease'
+          }}>
+            <AccommodationGrid />
+          </div>
         </div>
         
-        <SectionHeader>
-          <SectionTitle>CHECK IN TRAVEL</SectionTitle>
-          <ViewAllButton>전체보기 &gt;</ViewAllButton>
-        </SectionHeader>
-        <AccommodationGrid />
-        <div style={{padding: '0 0 30px 0 '}} />
-        <AccommodationGrid />
+        <div data-section="pick">
+          <div style={{
+            opacity: visibleSections.pick ? 1 : 0,
+            transform: `translateY(${visibleSections.pick ? 0 : '50px'})`,
+            transition: 'all 0.8s ease'
+          }}>
+            <AccommodationSlider />
+          </div>
+        </div>
         
-        <PromotionSection>
-          <PromotionSectionHeader>
-            <PromotionSectionTitle>PROMOTION</PromotionSectionTitle>
+        <div data-section="earlybird">
+          <SectionHeader isVisible={visibleSections.earlybird}>
+            <SectionTitle>EARLYBIRD</SectionTitle>
             <ViewAllButton>전체보기 &gt;</ViewAllButton>
-          </PromotionSectionHeader>
-          <PromotionCards />
-        </PromotionSection>
-       
+          </SectionHeader>
+          <div style={{
+            padding: '0 210px',
+            opacity: visibleSections.earlybird ? 1 : 0,
+            transform: `translateY(${visibleSections.earlybird ? 0 : '50px'})`,
+            transition: 'all 0.8s ease'
+          }}>
+            <ImageOverlay />
+          </div>
+        </div>
         
-        <MagazineSection>
-          <MagazineHeader>
-            <MagazineSectionTitle>MAGAZINE</MagazineSectionTitle>
+        <div data-section="checkInTravel">
+          <SectionHeader isVisible={visibleSections.checkInTravel}>
+            <SectionTitle>CHECK IN TRAVEL</SectionTitle>
             <ViewAllButton>전체보기 &gt;</ViewAllButton>
-          </MagazineHeader>
-          <MagazineGrid>
-            {magazineData.map((item) => (
-              <MagazineCard key={item.id}>
-                <MagazineImage src={item.image} alt={item.title} />
-                <MagazineOverlay>
-                  <MagazineNumber>{item.number}</MagazineNumber>
-                  <MagazineTitle>{item.title}</MagazineTitle>
-                </MagazineOverlay>
-              </MagazineCard>
-            ))}
-          </MagazineGrid>
-        </MagazineSection>
+          </SectionHeader>
+          <div style={{
+            opacity: visibleSections.checkInTravel ? 1 : 0,
+            transform: `translateY(${visibleSections.checkInTravel ? 0 : '50px'})`,
+            transition: 'all 0.8s ease'
+          }}>
+            <AccommodationGrid />
+            <div style={{padding: '0 0 30px 0 '}} />
+            <AccommodationGrid />
+          </div>
+        </div>
+        
+        <div data-section="promotion">
+          <PromotionSection isVisible={visibleSections.promotion}>
+            <PromotionSectionHeader isVisible={visibleSections.promotion}>
+              <PromotionSectionTitle>PROMOTION</PromotionSectionTitle>
+              <ViewAllButton>전체보기 &gt;</ViewAllButton>
+            </PromotionSectionHeader>
+            <div style={{
+              opacity: visibleSections.promotion ? 1 : 0,
+              transform: `translateY(${visibleSections.promotion ? 0 : '50px'})`,
+              transition: 'all 0.8s ease'
+            }}>
+              <PromotionCards />
+            </div>
+          </PromotionSection>
+        </div>
+        
+        <div data-section="magazine">
+          <MagazineSection isVisible={visibleSections.magazine}>
+            <MagazineHeader isVisible={visibleSections.magazine}>
+              <MagazineSectionTitle>MAGAZINE</MagazineSectionTitle>
+              <ViewAllButton>전체보기 &gt;</ViewAllButton>
+            </MagazineHeader>
+            <div style={{
+              opacity: visibleSections.magazine ? 1 : 0,
+              transform: `translateY(${visibleSections.magazine ? 0 : '50px'})`,
+              transition: 'all 0.8s ease'
+            }}>
+              <MagazineGrid>
+                {magazineData.map((item) => (
+                  <MagazineCard key={item.id}>
+                    <MagazineImage src={item.image} alt={item.title} />
+                    <MagazineOverlay>
+                      <MagazineNumber>{item.number}</MagazineNumber>
+                      <MagazineTitle>{item.title}</MagazineTitle>
+                    </MagazineOverlay>
+                  </MagazineCard>
+                ))}
+              </MagazineGrid>
+            </div>
+          </MagazineSection>
+        </div>
       </MainContent>
       
       <ContactButton>문의<br />하기</ContactButton>
