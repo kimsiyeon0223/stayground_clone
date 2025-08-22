@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import AccommodationCard from '../components/AccommodationCard'
@@ -407,6 +407,22 @@ const AccommodationGrid = styled.div`
   margin-bottom: 40px;
 `
 
+const AnimatedCard = styled.div<{ isVisible: boolean; delay?: string }>`
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${props => props.isVisible ? 0 : '30px'});
+  transition: all 0.6s ease;
+  transition-delay: ${props => props.delay || '0s'};
+`
+
+const LoadingSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #666;
+`
+
 const FilterModal = styled.div`
   position: fixed;
   top: 0;
@@ -592,6 +608,87 @@ const StayPage = () => {
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
   const [showSortModal, setShowSortModal] = useState(false)
   const [selectedSort, setSelectedSort] = useState<string | null>(null)
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set())
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasMore, setHasMore] = useState(false)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const loadingRef = useRef<HTMLDivElement>(null)
+  // 무한 스크롤 로딩 함수
+  const loadMoreAccommodations = () => {
+    if (isLoading || !hasMore) return
+    
+    setIsLoading(true)
+    
+    // 시뮬레이션된 로딩 시간
+    setTimeout(() => {
+      setAccommodationData(prev => {
+        const newAccommodations = generateMoreAccommodations(prev.length + 1, 6)
+        
+        // 100개 이상이면 더 이상 로드하지 않음
+        if (prev.length + newAccommodations.length >= 100) {
+          setHasMore(false)
+        }
+        
+        return [...prev, ...newAccommodations]
+      })
+      setIsLoading(false)
+    }, 1000)
+  }
+
+  // 무한 스크롤 observer 설정
+  useEffect(() => {
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMoreAccommodations()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (loadingRef.current) {
+      observerRef.current.observe(loadingRef.current)
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [hasMore, isLoading])
+
+  // 카드 애니메이션 observer 설정
+  useEffect(() => {
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cardId = parseInt(entry.target.getAttribute('data-card-id') || '0')
+            setVisibleCards(prev => new Set(prev).add(cardId))
+          }
+        })
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    )
+
+    const cards = document.querySelectorAll('.accommodation-card')
+    cards.forEach((card) => {
+      cardObserver.observe(card)
+    })
+
+    return () => {
+      cards.forEach((card) => {
+        cardObserver.unobserve(card)
+      })
+    }
+  }, [])
 
   const iconData = [
     { 
@@ -976,7 +1073,34 @@ const StayPage = () => {
     '경상북도', '제주도'
   ]
 
-  const accommodationData = [
+  // 더 많은 숙소 데이터 생성 함수
+  const generateMoreAccommodations = (startId: number, count: number) => {
+    const names = ['느린미학', '달리야드', '누운 섶', '숲속의 집', '바다뷰 펜션', '산중턱 별장', '도시의 오아시스', '전원생활', '힐링 스테이', '감성숙소']
+    const locations = ['경상북도 경주시', '제주도 서귀포시', '제주도 제주시', '경기도 가평군', '강원도 평창군', '충청남도 태안군', '전라남도 여수시', '경상남도 거제시', '강원도 강릉시', '충청북도 단양군']
+    const images = [
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop'
+    ]
+    
+    return Array.from({ length: count }, (_, index) => ({
+      id: startId + index,
+      name: names[Math.floor(Math.random() * names.length)],
+      location: locations[Math.floor(Math.random() * locations.length)],
+      capacity: `기준 ${Math.floor(Math.random() * 4) + 2}인(최대${Math.floor(Math.random() * 4) + 4}인)`,
+      price: `${Math.floor(Math.random() * 300) + 200},000원~`,
+      image: images[Math.floor(Math.random() * images.length)],
+      hasDeal: Math.random() > 0.7,
+      dealText: Math.random() > 0.7 ? `DEAL -${Math.floor(Math.random() * 20) + 10}%` : undefined
+    }))
+  }
+
+  const initialAccommodationData = [
     {
       id: 1,
       name: '느린미학',
@@ -1032,8 +1156,124 @@ const StayPage = () => {
       price: '310,000원~',
       image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
       hasDeal: false
+    },
+    {
+      id: 7,
+      name: '숲속의 집',
+      location: '전라남도 여수시',
+      capacity: '기준 3인(최대5인)',
+      price: '380,000원~',
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -20%'
+    },
+    {
+      id: 8,
+      name: '바다뷰 펜션',
+      location: '경상남도 거제시',
+      capacity: '기준 4인(최대6인)',
+      price: '450,000원~',
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 9,
+      name: '산중턱 별장',
+      location: '강원도 강릉시',
+      capacity: '기준 2인(최대4인)',
+      price: '520,000원~',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -12%'
+    },
+    {
+      id: 10,
+      name: '도시의 오아시스',
+      location: '충청북도 단양군',
+      capacity: '기준 3인(최대5인)',
+      price: '290,000원~',
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 11,
+      name: '전원생활',
+      location: '전라북도 전주시',
+      capacity: '기준 4인(최대6인)',
+      price: '360,000원~',
+      image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -18%'
+    },
+    {
+      id: 12,
+      name: '힐링 스테이',
+      location: '경상북도 안동시',
+      capacity: '기준 2인(최대4인)',
+      price: '340,000원~',
+      image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 13,
+      name: '감성숙소',
+      location: '제주도 서귀포시',
+      capacity: '기준 3인(최대5인)',
+      price: '410,000원~',
+      image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -25%'
+    },
+    {
+      id: 14,
+      name: '평화로운 휴식',
+      location: '강원도 춘천시',
+      capacity: '기준 2인(최대4인)',
+      price: '320,000원~',
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 15,
+      name: '자연 속 숙소',
+      location: '충청남도 공주시',
+      capacity: '기준 4인(최대6인)',
+      price: '480,000원~',
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -15%'
+    },
+    {
+      id: 16,
+      name: '힐링 펜션',
+      location: '전라남도 순천시',
+      capacity: '기준 3인(최대5인)',
+      price: '370,000원~',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 17,
+      name: '산악 휴양지',
+      location: '경상남도 통영시',
+      capacity: '기준 2인(최대4인)',
+      price: '390,000원~',
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -22%'
+    },
+    {
+      id: 18,
+      name: '바다 근처 숙소',
+      location: '강원도 속초시',
+      capacity: '기준 4인(최대6인)',
+      price: '550,000원~',
+      image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+      hasDeal: false
     }
   ]
+
+  const [accommodationData, setAccommodationData] = useState(initialAccommodationData)
 
   return (
     <Container>
@@ -1231,19 +1471,28 @@ const StayPage = () => {
           </FilterSectionContainer>
 
           <AccommodationGrid>
-            {accommodationData.map((accommodation) => (
-              <AccommodationCard
+            {accommodationData.map((accommodation, index) => (
+              <AnimatedCard
                 key={accommodation.id}
-                id={accommodation.id}
-                image={accommodation.image}
-                name={accommodation.name}
-                location={accommodation.location}
-                capacity={accommodation.capacity}
-                price={accommodation.price}
-                hasPromotion={accommodation.hasDeal}
-              />
+                className="accommodation-card"
+                data-card-id={accommodation.id}
+                isVisible={visibleCards.has(accommodation.id)}
+                delay={`${(index % 6) * 0.1}s`}
+              >
+                <AccommodationCard
+                  id={accommodation.id}
+                  image={accommodation.image}
+                  name={accommodation.name}
+                  location={accommodation.location}
+                  capacity={accommodation.capacity}
+                  price={accommodation.price}
+                  hasPromotion={accommodation.hasDeal}
+                />
+              </AnimatedCard>
             ))}
           </AccommodationGrid>
+          
+
         </ContentWrapper>
       </MainContent>
 
