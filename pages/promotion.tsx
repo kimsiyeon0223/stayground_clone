@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import PromotionCards from '../components/PromotionCards'
@@ -47,6 +48,12 @@ const EventCard = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+  }
 `
 
 const EventImage = styled.div`
@@ -202,7 +209,12 @@ const eventData = [
     badge: 'D-9',   
     title: '스테이그라운드 썸머 페스타',
     description: '여름 휴가를 준비하는 여러분에게 2만원 쿠폰을 선물합니다!',
-    link: '더보기 >'
+    link: '더보기 >',
+    detailTitle: '스테이그라운드 썸머 페스타',
+    detailSubtitle: '여름 휴가를 준비하는 여러분에게 2만원 쿠폰을 선물합니다!',
+    detailPeriod: '2025.06.01 - 2025.08.31',
+    detailDescription: '여름 휴가를 준비하는 여러분에게 스테이그라운드에서 특별한 혜택을 선물합니다. 2만원 할인쿠폰으로 더욱 특별한 여름 휴가를 즐겨보세요!',
+    heroImage: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=600&fit=crop'
   },
   {
     id: 2,
@@ -210,7 +222,12 @@ const eventData = [
     badge: 'END',
     title: '가정의 달 여행지원금',
     description: '2만원 쿠폰 받기',
-    link: '더보기 >'
+    link: '더보기 >',
+    detailTitle: '가정의달 여행지원금',
+    detailSubtitle: '2만원 쿠폰 받기',
+    detailPeriod: '2025.05.09 - 2025.05.31',
+    detailDescription: '가정의 달 5월을 맞아, 스테이그라운드에 입점한 모든 공간 예약 시 적용할 수 있는 2만원 할인쿠폰을 선물 드립니다. 사랑하는 이들과 누리는 특별한 휴식, 스테이그라운드의 선물과 함께해 보세요!',
+    heroImage: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop'
   },
   {
     id: 3,
@@ -218,12 +235,22 @@ const eventData = [
     badge: 'END',
     title: 'KB Pay가 선물드려요! [5회차]',
     description: '여행하기 좋은 날씨, 감성숙소 어디 갈지 고민 중이신가요? KB Pay에서 무료로 제공합니다.',
-    link: '더보기 >'
+    link: '더보기 >',
+    detailTitle: 'KB Pay가 선물드려요! [5회차]',
+    detailSubtitle: 'KB Pay에서 무료로 제공합니다',
+    detailPeriod: '2025.04.01 - 2025.04.30',
+    detailDescription: '여행하기 좋은 날씨, 감성숙소 어디 갈지 고민 중이신가요? KB Pay에서 무료로 제공합니다. KB Pay 결제 시 추가 혜택을 받아보세요!',
+    heroImage: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=600&fit=crop'
   }
 ]
 
 const PromotionPage = () => {
+  const router = useRouter()
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set())
+
+  const handleEventClick = (eventId: number) => {
+    router.push(`/promotion/${eventId}`)
+  }
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
@@ -289,7 +316,7 @@ const PromotionPage = () => {
                 
                 <EventCardsWrapper>
                   {eventData.map((event) => (
-                    <EventCard key={event.id}>
+                    <EventCard key={event.id} onClick={() => handleEventClick(event.id)}>
                       <EventImage>
                         <Image src={event.image} alt={event.title} />
                         <Badge>{event.badge}</Badge>
@@ -297,7 +324,7 @@ const PromotionPage = () => {
                       <EventContent>
                         <EventTitle>{event.title}</EventTitle>
                         <EventDescription>{event.description}</EventDescription>
-                        <EventLink href="#">
+                        <EventLink>
                           {event.link}
                         </EventLink>
                       </EventContent>

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 const Container = styled.div`
   display: flex;
@@ -86,7 +87,7 @@ const CallToAction = styled.a`
 
 const promotionData = [
   {
-    id: 1,
+    id: 4,
     title: '보스케 썸머 프로모션',
     description: '기간 내 숙박 시 10% 할인',
     callToAction: '예약하기 >',
@@ -94,7 +95,7 @@ const promotionData = [
     image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop'
   },
   {
-    id: 2,
+    id: 5,
     title: '조각밤 9월 프로모션',
     description: '기간 내 평일 숙박 시 10% 할인',
     callToAction: '예약하기 >',
@@ -102,7 +103,7 @@ const promotionData = [
     image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop'
   },
   {
-    id: 3,
+    id: 6,
     title: '스테이그라운드 썸머 페스타',
     description: '여름 휴가를 준비하는 여러분에게 2만원 쿠폰을 선물합니다!',
     callToAction: '더보기 >',
@@ -112,10 +113,16 @@ const promotionData = [
 ]
 
 const PromotionCards: React.FC = () => {
+  const router = useRouter()
+
+  const handleCardClick = (promotionId: number) => {
+    router.push(`/promotion/${promotionId}`)
+  }
+
   return (
     <Container>
       {promotionData.map((promotion) => (
-        <Card key={promotion.id}>
+        <Card key={promotion.id} onClick={() => handleCardClick(promotion.id)}>
           <ImageContainer>
             <Image imageUrl={promotion.image} />
             <DayBadge>{promotion.dayBadge}</DayBadge>
