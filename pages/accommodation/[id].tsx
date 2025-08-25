@@ -967,6 +967,9 @@ const MapContainer = styled.div`
   height: 400px;
   border-radius: 8px;
   overflow: hidden;
+  contain: layout;
+  isolation: isolate;
+  scroll-behavior: auto;
 `
 
 const MapPlaceholder = styled.div`
@@ -1110,32 +1113,12 @@ const AccommodationDetailPage = () => {
   const imagesPerView = 2
   const maxIndex = Math.ceil(totalImages / imagesPerView) - 1
 
-  // 페이지 로드 시 스크롤을 맨 위로 고정하고 지도 로드 후에도 유지
+  // 페이지 로드 시 스크롤을 맨 위로 이동
   React.useEffect(() => {
     window.scrollTo(0, 0)
-    
-    // 지도 로드 후 스크롤 위치를 맨 위로 유지
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        window.scrollTo(0, 0)
-      }
-    }
-
-    // 지도 로드 후 약간의 지연을 두고 스크롤 이벤트 리스너 추가
-    const timer = setTimeout(() => {
-      window.addEventListener('scroll', handleScroll)
-      
-      // 3초 후 이벤트 리스너 제거 (사용자가 스크롤할 수 있도록)
-      setTimeout(() => {
-        window.removeEventListener('scroll', handleScroll)
-      }, 3000)
-    }, 500)
-
-    return () => {
-      clearTimeout(timer)
-      window.removeEventListener('scroll', handleScroll)
-    }
   }, [])
+
+
 
   // PointSection 스크롤 감지
   React.useEffect(() => {
@@ -1726,21 +1709,26 @@ const AccommodationDetailPage = () => {
                     </ContactItem>
                   </ContactInfo>
                   
-                  <MapContainer>
-                    <iframe
-                      src="https://map.kakao.com/link/map/강원특별자치도 삼척시 근덕면 부남해변길 4,37.4417,129.1647"
-                      width="100%"
-                      height="400"
-                      frameBorder="0"
-                      scrolling="no"
-                      marginHeight={0}
-                      marginWidth={0}
-                      style={{ 
-                        pointerEvents: 'auto',
-                        border: 'none'
-                      }}
-                    />
-                  </MapContainer>
+                                     <MapContainer>
+                     <iframe
+                       src="https://map.kakao.com/link/map/강원특별자치도 삼척시 근덕면 부남해변길 4,37.4417,129.1647"
+                       width="100%"
+                       height="400"
+                       frameBorder="0"
+                       scrolling="no"
+                       marginHeight={0}
+                       marginWidth={0}
+                       loading="lazy"
+                       style={{ 
+                         pointerEvents: 'auto',
+                         border: 'none',
+                         contain: 'layout',
+                         isolation: 'isolate',
+                         transform: 'translateZ(0)',
+                         backfaceVisibility: 'hidden'
+                       }}
+                     />
+                   </MapContainer>
                 </>
               )}
               
