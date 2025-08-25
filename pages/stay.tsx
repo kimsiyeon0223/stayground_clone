@@ -7,6 +7,7 @@ import IconGridComponent from '../components/IconGrid'
 import FilterSectionComponent from '../components/FilterSection'
 import AccommodationGridComponent from '../components/AccommodationGrid'
 import Footer from '../components/Footer'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const Container = styled.div`
   width: 100vw;
@@ -29,12 +30,9 @@ const MainTitle = styled.h1`
   margin-bottom: 40px;
 `
 
-
-
-
-
 const StayPage = () => {
   const router = useRouter()
+  const { t } = useLanguage()
   
   // URL 파라미터에서 초기 필터 조건 읽기
   const getInitialFilters = () => {
@@ -95,8 +93,41 @@ const StayPage = () => {
 
   // 더 많은 숙소 데이터 생성 함수
   const generateMoreAccommodations = (startId: number, count: number) => {
-    const names = ['느린미학', '달리야드', '누운 섶', '숲속의 집', '바다뷰 펜션', '산중턱 별장', '도시의 오아시스', '전원생활', '힐링 스테이', '감성숙소']
-    const locations = ['경상북도 경주시', '제주도 서귀포시', '제주도 제주시', '경기도 가평군', '강원도 평창군', '충청남도 태안군', '전라남도 여수시', '경상남도 거제시', '강원도 강릉시', '충청북도 단양군']
+    const names = [
+      t('accommodation.names.neulimihak'),
+      t('accommodation.names.dallyard'),
+      t('accommodation.names.nuun_seop'),
+      t('accommodation.names.forest_house'),
+      t('accommodation.names.ocean_view_pension'),
+      t('accommodation.names.mountain_villa'),
+      t('accommodation.names.city_oasis'),
+      t('accommodation.names.rural_life'),
+      t('accommodation.names.healing_stay'),
+      t('accommodation.names.sensational_stay'),
+      t('accommodation.names.peaceful_rest'),
+      t('accommodation.names.nature_stay'),
+      t('accommodation.names.healing_pension'),
+      t('accommodation.names.mountain_resort'),
+      t('accommodation.names.ocean_near_stay')
+    ]
+    const locations = [
+      t('location.gyeongju'),
+      t('location.jeju_seogwipo'),
+      t('location.jeju_city'),
+      t('location.gapyeong'),
+      t('location.pyeongchang'),
+      t('location.taean'),
+      t('location.yeosu'),
+      t('location.geoje'),
+      t('location.gangneung'),
+      t('location.danyang'),
+      t('location.andong'),
+      t('location.chuncheon'),
+      t('location.gongju'),
+      t('location.suncheon'),
+      t('location.tongyeong'),
+      t('location.sokcho')
+    ]
     const images = [
       'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
@@ -112,7 +143,7 @@ const StayPage = () => {
       id: startId + index,
       name: names[Math.floor(Math.random() * names.length)],
       location: locations[Math.floor(Math.random() * locations.length)],
-      capacity: `기준 ${Math.floor(Math.random() * 4) + 2}인(최대${Math.floor(Math.random() * 4) + 4}인)`,
+      capacity: `${t('accommodation.max_capacity')} ${Math.floor(Math.random() * 4) + 4}${t('accommodation.people')}`,
       price: `${Math.floor(Math.random() * 300) + 200},000원~`,
       image: images[Math.floor(Math.random() * images.length)],
       hasDeal: Math.random() > 0.7,
@@ -123,36 +154,36 @@ const StayPage = () => {
   const initialAccommodationData = [
     {
       id: 1,
-      name: '느린미학',
-      location: '경상북도 경주시',
-      capacity: '기준 2인(최대4인)',
+      name: t('accommodation.names.neulimihak'),
+      location: t('location.gyeongju'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '330,000원~',
       image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 2,
-      name: '달리야드',
-      location: '제주도 서귀포시',
-      capacity: '기준 4인(최대4인)',
+      name: t('accommodation.names.dallyard'),
+      location: t('location.jeju_seogwipo'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '350,000원~',
       image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 3,
-      name: '누운 섶',
-      location: '제주도 제주시',
-      capacity: '기준 2인(최대6인)',
+      name: t('accommodation.names.nuun_seop'),
+      location: t('location.jeju_city'),
+      capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
       price: '390,000원',
       image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 4,
-      name: '그리드 제주',
-      location: '경기도 가평군',
-      capacity: '기준 2인(최대4인)',
+      name: t('accommodation.names.grid_jeju'),
+      location: t('location.gapyeong'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '280,000원~',
       image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
       hasDeal: true,
@@ -160,9 +191,9 @@ const StayPage = () => {
     },
     {
       id: 5,
-      name: '서와정',
-      location: '강원도 평창군',
-      capacity: '기준 4인(최대6인)',
+      name: t('magazine.seowajeong'),
+      location: t('location.pyeongchang'),
+      capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
       price: '420,000원~',
       image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
       hasDeal: true,
@@ -170,18 +201,18 @@ const StayPage = () => {
     },
     {
       id: 6,
-      name: '조각밤',
-      location: '충청남도 태안군',
-      capacity: '기준 2인(최대4인)',
+      name: t('accommodation.names.jogak_night'),
+      location: t('location.taean'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '310,000원~',
       image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 7,
-      name: '숲속의 집',
-      location: '전라남도 여수시',
-      capacity: '기준 3인(최대5인)',
+      name: t('accommodation.names.forest_house'),
+      location: t('location.yeosu'),
+      capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
       price: '380,000원~',
       image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
       hasDeal: true,
@@ -189,18 +220,18 @@ const StayPage = () => {
     },
     {
       id: 8,
-      name: '바다뷰 펜션',
-      location: '경상남도 거제시',
-      capacity: '기준 4인(최대6인)',
+      name: t('accommodation.names.ocean_view_pension'),
+      location: t('location.geoje'),
+      capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
       price: '450,000원~',
       image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 9,
-      name: '산중턱 별장',
-      location: '강원도 강릉시',
-      capacity: '기준 2인(최대4인)',
+      name: t('accommodation.names.mountain_villa'),
+      location: t('location.gangneung'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '520,000원~',
       image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
       hasDeal: true,
@@ -208,18 +239,18 @@ const StayPage = () => {
     },
     {
       id: 10,
-      name: '도시의 오아시스',
-      location: '충청북도 단양군',
-      capacity: '기준 3인(최대5인)',
+      name: t('accommodation.names.city_oasis'),
+      location: t('location.danyang'),
+      capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
       price: '290,000원~',
       image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 11,
-      name: '전원생활',
-      location: '전라북도 전주시',
-      capacity: '기준 4인(최대6인)',
+      name: t('accommodation.names.rural_life'),
+      location: t('location.jeonbuk'),
+      capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
       price: '360,000원~',
       image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
       hasDeal: true,
@@ -227,18 +258,18 @@ const StayPage = () => {
     },
     {
       id: 12,
-      name: '힐링 스테이',
-      location: '경상북도 안동시',
-      capacity: '기준 2인(최대4인)',
+      name: t('accommodation.names.healing_stay'),
+      location: t('location.andong'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '340,000원~',
       image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
       hasDeal: false
     },
     {
       id: 13,
-      name: '감성숙소',
-      location: '제주도 서귀포시',
-      capacity: '기준 3인(최대5인)',
+      name: t('accommodation.names.sensational_stay'),
+      location: t('location.jeju_seogwipo'),
+      capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
       price: '410,000원~',
       image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
       hasDeal: true,
@@ -246,9 +277,9 @@ const StayPage = () => {
     },
     {
       id: 14,
-      name: '평화로운 휴식',
-      location: '강원도 춘천시',
-      capacity: '기준 2인(최대4인)',
+      name: t('accommodation.names.peaceful_rest'),
+      location: t('location.chuncheon'),
+      capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
       price: '320,000원~',
       image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
       hasDeal: false
@@ -322,8 +353,184 @@ const StayPage = () => {
     }
   ]
 
-  const [accommodationData, setAccommodationData] = useState(initialAccommodationData)
-  const [filteredData, setFilteredData] = useState(initialAccommodationData)
+  const [accommodationData, setAccommodationData] = useState<any[]>([])
+
+  // 언어가 변경될 때마다 숙소 데이터를 다시 생성
+  useEffect(() => {
+    const newInitialData = [
+      {
+        id: 1,
+        name: t('accommodation.names.neulimihak'),
+        location: t('location.gyeongju'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '330,000원~',
+        image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 2,
+        name: t('accommodation.names.dallyard'),
+        location: t('location.jeju_seogwipo'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '350,000원~',
+        image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 3,
+        name: t('accommodation.names.nuun_seop'),
+        location: t('location.jeju_city'),
+        capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
+        price: '390,000원',
+        image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 4,
+        name: t('accommodation.names.grid_jeju'),
+        location: t('location.gapyeong'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '280,000원~',
+        image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
+        hasDeal: true,
+        dealText: 'DEAL -15%'
+      },
+      {
+        id: 5,
+        name: t('magazine.seowajeong'),
+        location: t('location.pyeongchang'),
+        capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
+        price: '420,000원~',
+        image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
+        hasDeal: true,
+        dealText: 'DEAL -10%'
+      },
+      {
+        id: 6,
+        name: t('accommodation.names.jogak_night'),
+        location: t('location.taean'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '310,000원~',
+        image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 7,
+        name: t('accommodation.names.forest_house'),
+        location: t('location.yeosu'),
+        capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
+        price: '380,000원~',
+        image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+        hasDeal: true,
+        dealText: 'DEAL -20%'
+      },
+      {
+        id: 8,
+        name: t('accommodation.names.ocean_view_pension'),
+        location: t('location.geoje'),
+        capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
+        price: '450,000원~',
+        image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 9,
+        name: t('accommodation.names.mountain_villa'),
+        location: t('location.gangneung'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '520,000원~',
+        image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+        hasDeal: true,
+        dealText: 'DEAL -12%'
+      },
+      {
+        id: 10,
+        name: t('accommodation.names.city_oasis'),
+        location: t('location.danyang'),
+        capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
+        price: '290,000원~',
+        image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 11,
+        name: t('accommodation.names.rural_life'),
+        location: t('location.jeonbuk'),
+        capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
+        price: '360,000원~',
+        image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+        hasDeal: true,
+        dealText: 'DEAL -18%'
+      },
+      {
+        id: 12,
+        name: t('accommodation.names.healing_stay'),
+        location: t('location.andong'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '340,000원~',
+        image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 13,
+        name: t('accommodation.names.sensational_stay'),
+        location: t('location.jeju_seogwipo'),
+        capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
+        price: '410,000원~',
+        image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
+        hasDeal: true,
+        dealText: 'DEAL -25%'
+      },
+      {
+        id: 14,
+        name: t('accommodation.names.peaceful_rest'),
+        location: t('location.chuncheon'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '320,000원~',
+        image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 15,
+        name: t('accommodation.names.nature_stay'),
+        location: t('location.gongju'),
+        capacity: `${t('accommodation.max_capacity')} 6${t('accommodation.people')}`,
+        price: '480,000원~',
+        image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 16,
+        name: t('accommodation.names.healing_pension'),
+        location: t('location.suncheon'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '370,000원~',
+        image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 17,
+        name: t('accommodation.names.mountain_resort'),
+        location: t('location.tongyeong'),
+        capacity: `${t('accommodation.max_capacity')} 5${t('accommodation.people')}`,
+        price: '390,000원~',
+        image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+        hasDeal: false
+      },
+      {
+        id: 18,
+        name: t('accommodation.names.ocean_near_stay'),
+        location: t('location.sokcho'),
+        capacity: `${t('accommodation.max_capacity')} 4${t('accommodation.people')}`,
+        price: '550,000원~',
+        image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+        hasDeal: false
+      }
+    ]
+    setAccommodationData(newInitialData)
+    setFilteredData(newInitialData) // 필터된 데이터도 함께 업데이트
+  }, [t]) // t 함수가 변경될 때마다 실행
+  const [filteredData, setFilteredData] = useState<any[]>([])
 
   // 검색 필터링 함수
   const filterAccommodations = () => {
@@ -439,7 +646,7 @@ const StayPage = () => {
       <Header isScrolled={true} />
       <MainContent>
         <ContentWrapper>
-          <MainTitle>CHECK IN TRAVEL</MainTitle>
+          <MainTitle>{t('stay.title')}</MainTitle>
           
           <SearchBarComponent
             selectedLocation={selectedLocation}
@@ -471,7 +678,7 @@ const StayPage = () => {
               borderBottom: '1px solid #eee',
               marginBottom: '20px'
             }}>
-              검색 결과: <strong>{filteredData.length}</strong>개의 숙소
+              {t('stay.search_results')}: <strong>{filteredData.length}</strong>{t('stay.accommodations')}
             </div>
           )}
 

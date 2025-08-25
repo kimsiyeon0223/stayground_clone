@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useLanguage } from '../contexts/LanguageContext'
 
 interface SearchBarProps {
   selectedLocation: string | null
@@ -332,6 +333,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
   onDateSelect,
   onPeopleSelect
 }) => {
+  const { t } = useLanguage()
   const [activeSearchSection, setActiveSearchSection] = useState<string | null>(null)
   const [showLocationModal, setShowLocationModal] = useState(false)
   const [showCalendarModal, setShowCalendarModal] = useState(false)
@@ -372,10 +374,10 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
   }, [showLocationModal, showCalendarModal, showPeopleModal])
 
   const locationData = [
-    '전체', '서울', '부산', '대구', '인천',
-    '대전', '광주', '울산', '경기도', '강원도',
-    '충청남도', '충청북도', '전라남도', '전라북도', '경상남도',
-    '경상북도', '제주도'
+    t('stay.location.all'), t('stay.location.seoul'), t('stay.location.busan'), t('stay.location.daegu'), t('stay.location.incheon'),
+    t('stay.location.daejeon'), t('stay.location.gwangju'), t('stay.location.ulsan'), t('stay.location.gyeonggi'), t('stay.location.gangwon'),
+    t('stay.location.chungnam'), t('stay.location.chungbuk'), t('stay.location.jeonnam'), t('stay.location.jeonbuk'), t('stay.location.gyeongnam'),
+    t('stay.location.gyeongbuk'), t('stay.location.jeju')
   ]
 
   const handleSearchSectionClick = (section: string) => {
@@ -491,11 +493,11 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
     const { adults, children, infants } = peopleCount
     const parts = []
     
-    if (adults > 0) parts.push(`성인 ${adults}명`)
-    if (children > 0) parts.push(`아동 ${children}명`)
-    if (infants > 0) parts.push(`영아 ${infants}명`)
+    if (adults > 0) parts.push(`${t('stay.search.adult')} ${adults}${t('stay.search.people_count')}`)
+    if (children > 0) parts.push(`${t('stay.search.child')} ${children}${t('stay.search.people_count')}`)
+    if (infants > 0) parts.push(`${t('stay.search.infant')} ${infants}${t('stay.search.people_count')}`)
     
-    return parts.length > 0 ? parts.join(', ') : '인원 선택'
+    return parts.length > 0 ? parts.join(', ') : t('stay.search.people_placeholder')
   }
 
   const renderCalendar = (monthOffset: number = 0) => {
@@ -572,9 +574,9 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           isActive={activeSearchSection === 'destination'}
           onClick={() => handleSearchSectionClick('destination')}
         >
-          <SearchLabel>여행지</SearchLabel>
+          <SearchLabel>{t('stay.search.destination')}</SearchLabel>
           <SearchPlaceholder hasValue={!!selectedLocation}>
-            {selectedLocation || '여행지/숙소 검색'}
+            {selectedLocation || t('stay.search.destination_placeholder')}
           </SearchPlaceholder>
         </SearchSection>
         
@@ -582,9 +584,9 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           isActive={activeSearchSection === 'checkin'}
           onClick={() => handleSearchSectionClick('checkin')}
         >
-          <SearchLabel>체크인</SearchLabel>
+          <SearchLabel>{t('stay.search.checkin')}</SearchLabel>
           <SearchPlaceholder hasValue={!!selectedDates.checkin}>
-            {selectedDates.checkin ? formatDate(selectedDates.checkin) : '체크인 날짜 검색'}
+            {selectedDates.checkin ? formatDate(selectedDates.checkin) : t('stay.search.checkin_placeholder')}
           </SearchPlaceholder>
         </SearchSection>
         
@@ -592,9 +594,9 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           isActive={activeSearchSection === 'checkout'}
           onClick={() => handleSearchSectionClick('checkout')}
         >
-          <SearchLabel>체크아웃</SearchLabel>
+          <SearchLabel>{t('stay.search.checkout')}</SearchLabel>
           <SearchPlaceholder hasValue={!!selectedDates.checkout}>
-            {selectedDates.checkout ? formatDate(selectedDates.checkout) : '체크아웃 날짜 검색'}
+            {selectedDates.checkout ? formatDate(selectedDates.checkout) : t('stay.search.checkout_placeholder')}
           </SearchPlaceholder>
         </SearchSection>
         
@@ -602,7 +604,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           isActive={activeSearchSection === 'people'}
           onClick={() => handleSearchSectionClick('people')}
         >
-          <SearchLabel>인원</SearchLabel>
+          <SearchLabel>{t('stay.search.people')}</SearchLabel>
           <SearchPlaceholder hasValue={peopleCount.adults > 0 || peopleCount.children > 0 || peopleCount.infants > 0}>
             {formatPeopleText()}
           </SearchPlaceholder>
@@ -637,7 +639,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           </CalendarGrid>
           
           <ApplyButton onClick={handleApplyDates}>
-            적용
+            {t('stay.search.apply')}
           </ApplyButton>
         </CalendarModal>
       )}
@@ -645,7 +647,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
       {showPeopleModal && (
         <PeopleModal className="people-modal">
           <PeopleRow>
-            <PeopleLabel>성인</PeopleLabel>
+            <PeopleLabel>{t('stay.search.adult')}</PeopleLabel>
             <CounterContainer>
               <CounterButton 
                 onClick={() => handlePeopleCountChange('adults', 'decrease')}
@@ -663,7 +665,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           </PeopleRow>
           
           <PeopleRow>
-            <PeopleLabel>아동</PeopleLabel>
+            <PeopleLabel>{t('stay.search.child')}</PeopleLabel>
             <CounterContainer>
               <CounterButton 
                 onClick={() => handlePeopleCountChange('children', 'decrease')}
@@ -681,7 +683,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           </PeopleRow>
           
           <PeopleRow>
-            <PeopleLabel>영아</PeopleLabel>
+            <PeopleLabel>{t('stay.search.infant')}</PeopleLabel>
             <CounterContainer>
               <CounterButton 
                 onClick={() => handlePeopleCountChange('infants', 'decrease')}
@@ -700,7 +702,7 @@ const SearchBarComponent: React.FC<SearchBarProps> = ({
           
           <PeopleApplyContainer>
             <PeopleApplyButton onClick={handlePeopleApply}>
-              적용
+              {t('stay.search.apply')}
             </PeopleApplyButton>
           </PeopleApplyContainer>
         </PeopleModal>

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const Container = styled.div`
   display: flex;
@@ -85,35 +86,36 @@ const CallToAction = styled.a`
   padding-top: 20px;
 `
 
-const promotionData = [
-  {
-    id: 4,
-    title: '느린미학 썸머 프로모션',
-    description: '기간 내 숙박 시 10% 할인',
-    callToAction: '예약하기 >',
-    dayBadge: 'D-11',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop'
-  },
-  {
-    id: 5,
-    title: '달리야드 9월 프로모션',
-    description: '기간 내 평일 숙박 시 10% 할인',
-    callToAction: '예약하기 >',
-    dayBadge: 'D-41',
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop'
-  },
-  {
-    id: 6,
-    title: '누운 섶 썸머 페스타',
-    description: '여름 휴가를 준비하는 여러분에게 2만원 쿠폰을 선물합니다!',
-    callToAction: '더보기 >',
-    dayBadge: 'D-11',
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop'
-  }
-]
-
 const PromotionCards: React.FC = () => {
   const router = useRouter()
+  const { t } = useLanguage()
+
+  const promotionData = [
+    {
+      id: 4,
+      title: t('promotion.bosque_summer'),
+      description: t('promotion.bosque_summer_desc'),
+      callToAction: t('promotion.bosque_summer_cta') + ' >',
+      dayBadge: 'D-11',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop'
+    },
+    {
+      id: 5,
+      title: t('promotion.jogak_night'),
+      description: t('promotion.jogak_night_desc'),
+      callToAction: t('promotion.jogak_night_cta') + ' >',
+      dayBadge: 'D-41',
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop'
+    },
+    {
+      id: 6,
+      title: t('promotion.summer_festa'),
+      description: t('promotion.summer_festa_desc'),
+      callToAction: t('promotion.summer_festa_cta') + ' >',
+      dayBadge: 'D-11',
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop'
+    }
+  ]
 
   const handleCardClick = (promotionId: number) => {
     // 프로모션 ID에 따라 해당하는 숙소 상세 페이지로 이동

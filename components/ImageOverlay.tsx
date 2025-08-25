@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const OverlayContainer = styled.div`
   position: relative;
@@ -71,11 +72,13 @@ const EndButton = styled.div`
 `
 
 const ImageOverlay: React.FC = () => {
+  const { t } = useLanguage()
+  
   return (
     <OverlayContainer>
       <TextOverlay>
-        <Title>그리드 제주 제주도 서귀포시</Title>
-        <Description>알림 신청 시, 3만 원 추가 할인 쿠폰 지급</Description>
+        <Title>{t('accommodation.names.dallyard')} {t('location.jeju_seogwipo')}</Title>
+        <Description>{t('earlybird.description')}</Description>
         <DateBox>
           <DateText>2월 1일, 오후 12시</DateText>
         </DateBox>

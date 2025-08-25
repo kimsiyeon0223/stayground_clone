@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const FooterContainer = styled.footer`
   background: #1a1a1a;
@@ -98,16 +99,18 @@ const Copyright = styled.div`
 `
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage()
+  
   return (
     <FooterContainer>
       <FooterContent>
         {/* Top Section - Links & Social Media */}
         <TopSection>
           <Links>
-            <a href="/customer-center">고객센터</a>
-            <a href="/store-inquiry">입점 문의</a>
-            <a href="/terms">이용약관</a>
-            <a href="/privacy">개인정보처리방침</a>
+            <a href="/customer-center">{t('footer.support')}</a>
+            <a href="/store-inquiry">{t('footer.contact')}</a>
+            <a href="/terms">{t('footer.terms')}</a>
+            <a href="/privacy">{t('footer.privacy')}</a>
           </Links>
           
           <SocialIcons>
@@ -118,13 +121,13 @@ const Footer: React.FC = () => {
 
         {/* Company Information */}
         <CompanyInfo>
-          <p>스테이그라운드 | 대표이사 : 정민혁 | 대표전화 : 1588-6198 | stayground@staybility.co.kr</p>
-          <p>주소 : 대구광역시 북구 호암로 51, 4층 | 사업자등록번호 : 808-85-02772</p>
-          <p>통신판매업등록번호 : 제 2024-대구북구-0886 호 | 관광사업자등록번호 : 제 2023-000005호</p>
+          <p>{t('footer.company_name')} | {t('footer.ceo')} : {t('footer.ceo_name')} | {t('footer.phone')} : {t('footer.phone_number')} | {t('footer.email')}</p>
+          <p>{t('footer.address')} : {t('footer.address_detail')} | {t('footer.business_number')} : {t('footer.business_number_detail')}</p>
+          <p>{t('footer.commerce_number')} : {t('footer.commerce_number_detail')} | {t('footer.tourism_number')} : {t('footer.tourism_number_detail')}</p>
         </CompanyInfo>
         <Disclaimer>
           <p>
-            스테이그라운드는 통신판매 중개자로서 통신판매의 당사자가 아니며 상품의 예약, 이용 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.
+            {t('footer.disclaimer')}
           </p>
         </Disclaimer>
 
@@ -133,7 +136,7 @@ const Footer: React.FC = () => {
         {/* Copyright */}
         <Copyright>
           <div className="brand">STAY GROUND.</div>
-          <div className="copyright-text">Copyright © 2023 STAYBILITY All Rights Reserved.</div>
+          <div className="copyright-text">{t('footer.copyright')}</div>
         </Copyright>
       </FooterContent>
     </FooterContainer>

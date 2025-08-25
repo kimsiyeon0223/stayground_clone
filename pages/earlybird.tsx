@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ImageOverlay from '../components/ImageOverlay'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const Container = styled.div`
   width: 100vw;
@@ -29,7 +30,6 @@ const SectionTitle = styled.h2`
   color: #333;
   margin-bottom: 40px;
 `
-
 
 
 const InquiryButton = styled.button`
@@ -61,6 +61,7 @@ const InquiryButton = styled.button`
 
 const EarlybirdPage = () => {
   const router = useRouter()
+  const { t } = useLanguage()
 
   const handleEarlybirdClick = () => {
     router.push('/earlybird/1')
@@ -73,7 +74,7 @@ const EarlybirdPage = () => {
       <MainContent>
         <ContentWrapper>
           <EarlybirdSection>
-            <SectionTitle>EARLYBIRD</SectionTitle>
+            <SectionTitle>{t('earlybird.title')}</SectionTitle>
             <div onClick={handleEarlybirdClick} style={{ cursor: 'pointer' }}>
               <ImageOverlay />
             </div>

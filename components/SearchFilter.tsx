@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const getDaysInMonth = (year: number, month: number) => {
   return new Date(year, month, 0).getDate()
@@ -311,6 +312,7 @@ const CounterValue = styled.span`
 
 const SearchFilter = () => {
   const router = useRouter()
+  const { t } = useLanguage()
   const containerRef = useRef<HTMLDivElement>(null)
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false)
   const [isDateModalOpen, setIsDateModalOpen] = useState(false)
@@ -486,7 +488,7 @@ const SearchFilter = () => {
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
             </svg>
           </Icon>
-          <Text isActive={isLocationModalOpen}>지역</Text>
+          <Text isActive={isLocationModalOpen}>{t('search.location')}</Text>
         </FilterSection>
         
         <Divider />
@@ -503,7 +505,7 @@ const SearchFilter = () => {
               <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
           </Icon>
-          <Text isActive={isDateModalOpen}>날짜</Text>
+          <Text isActive={isDateModalOpen}>{t('search.date')}</Text>
         </FilterSection>
         
         <Divider />
@@ -518,7 +520,7 @@ const SearchFilter = () => {
               <circle cx="12" cy="7" r="4"/>
             </svg>
           </Icon>
-          <Text isActive={isPeopleModalOpen}>인원</Text>
+          <Text isActive={isPeopleModalOpen}>{t('search.people')}</Text>
         </FilterSection>
       </SearchBar>
 
@@ -549,7 +551,7 @@ const SearchFilter = () => {
             setIsDateModalOpen(false)
             setIsPeopleModalOpen(true)
           }}>
-            적용
+            {t('search.apply')}
           </ApplyButton>
         </DateModal>
       )}
@@ -557,7 +559,7 @@ const SearchFilter = () => {
       {isPeopleModalOpen && (
         <PeopleModal>
           <PeopleSection>
-            <PeopleLabel>성인</PeopleLabel>
+            <PeopleLabel>{t('common.adult')}</PeopleLabel>
             <CounterContainer>
               <CounterButton 
                 onClick={() => setPeopleCount(prev => ({ ...prev, adults: Math.max(0, prev.adults - 1) }))}
@@ -575,7 +577,7 @@ const SearchFilter = () => {
           </PeopleSection>
           
           <PeopleSection>
-            <PeopleLabel>아동</PeopleLabel>
+            <PeopleLabel>{t('common.child')}</PeopleLabel>
             <CounterContainer>
               <CounterButton 
                 onClick={() => setPeopleCount(prev => ({ ...prev, children: Math.max(0, prev.children - 1) }))}
@@ -593,7 +595,7 @@ const SearchFilter = () => {
           </PeopleSection>
           
           <PeopleSection>
-            <PeopleLabel>영아</PeopleLabel>
+            <PeopleLabel>{t('common.infant')}</PeopleLabel>
             <CounterContainer>
               <CounterButton 
                 onClick={() => setPeopleCount(prev => ({ ...prev, infants: Math.max(0, prev.infants - 1) }))}
@@ -643,7 +645,7 @@ const SearchFilter = () => {
             const url = queryString ? `/stay?${queryString}` : '/stay'
             router.push(url)
           }}>
-            적용
+            {t('search.apply')}
           </ApplyButton>
         </PeopleModal>
       )}

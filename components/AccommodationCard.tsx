@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import { useLanguage } from '../contexts/LanguageContext'
 
 interface AccommodationCardProps {
   id: number
@@ -102,6 +103,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
   hasPromotion = false
 }) => {
   const router = useRouter()
+  const { t } = useLanguage()
 
   const handleClick = () => {
     router.push(`/accommodation/${id}`)
@@ -115,7 +117,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
       </ImageContainer>
       <ContentContainer>
         <Name>{name}</Name>
-        <LocationAndCapacity>{location} | {capacity}</LocationAndCapacity>
+        <LocationAndCapacity>{location}{t('accommodation.location_separator')}{capacity}</LocationAndCapacity>
         <PriceContainer>
           <Price>{price}</Price>
           <PriceUnit>원 ~</PriceUnit>

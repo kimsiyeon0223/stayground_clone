@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useLanguage } from '../contexts/LanguageContext'
 
 interface FilterSectionProps {
   selectedAmenities: string[]
@@ -199,22 +200,23 @@ const FilterSectionComponent: React.FC<FilterSectionProps> = ({
   onAmenitiesChange,
   onSortChange
 }) => {
+  const { t } = useLanguage()
   const [showFilterModal, setShowFilterModal] = useState(false)
   const [showSortModal, setShowSortModal] = useState(false)
   const [tempAmenities, setTempAmenities] = useState(selectedAmenities)
 
   const amenitiesData = [
-    '사계절 온수풀', 'BBQ', '노천탕', '불멍', '산책로',
-    '테라스', '조식', '스마트홈', '피트니스(헬스장)', '요가',
-    '노래방'
+    t('stay.amenities.four_season_pool'), t('stay.amenities.bbq'), t('stay.amenities.outdoor_bath'), t('stay.amenities.fire_pit'), t('stay.amenities.walking_trail'),
+    t('stay.amenities.terrace'), t('stay.amenities.breakfast'), t('stay.amenities.smart_home'), t('stay.amenities.fitness'), t('stay.amenities.yoga'),
+    t('stay.amenities.karaoke')
   ]
 
   const sortOptions = [
-    '추천순',
-    '최신순',
-    '인기순',
-    '높은 가격순',
-    '낮은 가격순'
+    t('stay.filter.recommended'),
+    t('stay.filter.latest'),
+    t('stay.filter.popular'),
+    t('stay.filter.price_high'),
+    t('stay.filter.price_low')
   ]
 
   const handleFilterClick = () => {
@@ -257,7 +259,7 @@ const FilterSectionComponent: React.FC<FilterSectionProps> = ({
         onClick={handleFilterClick}
         hasActiveFilter={selectedAmenities.length > 0}
       >
-        필터
+        {t('stay.filter.filter')}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
           <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -266,7 +268,7 @@ const FilterSectionComponent: React.FC<FilterSectionProps> = ({
       </FilterButton>
       
       <FilterButton isWide={true} onClick={handleSortClick}>
-        {selectedSort || '추천순'}
+        {selectedSort || t('stay.filter.recommended')}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
@@ -290,7 +292,7 @@ const FilterSectionComponent: React.FC<FilterSectionProps> = ({
         <FilterModal>
           <FilterModalContent>
             <FilterModalHeader>
-              <FilterModalTitle>필터</FilterModalTitle>
+              <FilterModalTitle>{t('stay.filter.filter')}</FilterModalTitle>
               <CloseButton onClick={handleCloseFilter}>×</CloseButton>
             </FilterModalHeader>
             
@@ -311,10 +313,10 @@ const FilterSectionComponent: React.FC<FilterSectionProps> = ({
             
             <FilterModalFooter>
               <ResetButton onClick={handleResetFilter}>
-                초기화
+                {t('stay.filter.reset')}
               </ResetButton>
               <ApplyFilterButton onClick={handleApplyFilter}>
-                적용
+                {t('stay.filter.apply')}
               </ApplyFilterButton>
             </FilterModalFooter>
           </FilterModalContent>

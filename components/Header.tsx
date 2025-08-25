@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import SearchFilter from './SearchFilter'
+import { useLanguage } from '../contexts/LanguageContext'
 
 interface HeaderProps {
   isScrolled?: boolean;
@@ -209,11 +210,21 @@ const HeaderSearchFilter = styled.div<HeaderProps>`
 
 const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = false }) => {
   const router = useRouter()
+  const { language, setLanguage, t } = useLanguage()
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [isLanguageModalVisible, setIsLanguageModalVisible] = React.useState(false)
-  const [selectedLanguage, setSelectedLanguage] = React.useState('KOR')
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const languageTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  // 언어 표시 텍스트
+  const getLanguageText = (lang: string) => {
+    switch (lang) {
+      case 'ko': return 'KOR'
+      case 'en': return 'ENG'
+      case 'zh': return 'CHI'
+      default: return 'KOR'
+    }
+  }
 
   const handleLogoClick = () => {
     router.push('/')
@@ -249,8 +260,8 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = fals
     setIsLanguageModalVisible(!isLanguageModalVisible)
   }
 
-  const handleLanguageSelect = (language: string) => {
-    setSelectedLanguage(language)
+  const handleLanguageSelect = (lang: string) => {
+    setLanguage(lang as 'ko' | 'en' | 'zh')
     setIsLanguageModalVisible(false)
   }
 
@@ -263,7 +274,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = fals
   return (
     <HeaderContainer isScrolled={isScrolled} isDetailPage={isDetailPage}>
       <PromoBanner onClick={handlePromoClick}>
-        썸머 페스타 2만 원 쿠폰 받기
+        {t('home.summer_festa_coupon')}
       </PromoBanner>
       
       <MainHeader isScrolled={isScrolled}>
@@ -278,11 +289,11 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = fals
         
         <Navigation>
           <NavLinks isScrolled={isScrolled}>
-            <a href="/stay">스테이</a>
-            <a href="/promotion">프로모션</a>
-            <a href="/earlybird">얼리버드</a>
-            <a href="/magazine">매거진</a>
-            <a href="/about">by. STAYBILITY</a>
+            <a href="/stay">{t('nav.stay')}</a>
+            <a href="/promotion">{t('nav.promotion')}</a>
+            <a href="/earlybird">{t('nav.earlybird')}</a>
+            <a href="/magazine">{t('nav.magazine')}</a>
+            <a href="/about">{t('nav.about')}</a>
           </NavLinks>
           
           <LoginContainer
@@ -290,25 +301,25 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = fals
             onMouseLeave={handleMouseLeave}
           >
             <LoginButton isScrolled={isScrolled}>
-              로그인
+              {t('header.login')}
             </LoginButton>
             <LoginModal 
               className={isModalVisible ? 'visible' : ''}
               onMouseEnter={handleModalMouseEnter}
               onMouseLeave={handleModalMouseLeave}
             >
-              <ModalItem>로그인 / 회원가입</ModalItem>
-              <ModalItem>비회원 예약 조회</ModalItem>
+              <ModalItem>{t('header.login')} / {t('header.signup')}</ModalItem>
+              <ModalItem>{t('header.non_member_reservation')}</ModalItem>
             </LoginModal>
           </LoginContainer>
           
           <LanguageSelector isScrolled={isScrolled} onClick={handleLanguageClick}>
             <span style={{ fontSize: '16px' }}>🌐</span>
-            <span>{selectedLanguage}</span>
+            <span>{getLanguageText(language)}</span>
             <LanguageModal className={isLanguageModalVisible ? 'visible' : ''}>
-              <LanguageItem onClick={() => handleLanguageSelect('KOR')}>KOR</LanguageItem>
-              <LanguageItem onClick={() => handleLanguageSelect('ENG')}>ENG</LanguageItem>
-              <LanguageItem onClick={() => handleLanguageSelect('CHI')}>CHI</LanguageItem>
+              <LanguageItem onClick={() => handleLanguageSelect('ko')}>KOR</LanguageItem>
+              <LanguageItem onClick={() => handleLanguageSelect('en')}>ENG</LanguageItem>
+              <LanguageItem onClick={() => handleLanguageSelect('zh')}>CHI</LanguageItem>
             </LanguageModal>
           </LanguageSelector>
         </Navigation>

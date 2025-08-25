@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 const Container = styled.div`
   width: 100vw;
@@ -1076,213 +1077,190 @@ const BackButton = styled.button`
   }
 `
 
-const accommodationData = {
-  1: {
-    id: 1,
-    name: '느린미학',
-    location: '경상북도 경주시',
-    description: '느린미학은 경주의 역사와 문화를 담은 아름다운 숙소입니다. 전통과 현대가 조화를 이루는 공간에서 특별한 휴식을 경험하실 수 있습니다.',
-    price: 330000,
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '정원', '차 시연', '문화 체험'],
-    mapUrl: 'https://map.kakao.com/link/map/느린미학,35.8428,129.2117',
-    roomInfo: {
-      capacity: '2명(최대 4명)',
-      checkIn: '15:00',
-      checkOut: '11:00',
-      area: '65.8m²',
-      spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
-      bedTypes: '퀸(1), 싱글(1)'
-    }
-  },
-  2: {
-    id: 2,
-    name: '달리야드',
-    location: '제주도 서귀포시',
-    description: '달리야드는 제주의 아름다운 자연 속에서 편안한 휴식을 제공하는 프리미엄 숙소입니다. 바다와 산을 동시에 감상할 수 있는 특별한 공간입니다.',
-    price: 350000,
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '바베큐 시설', '수영장', '조식 제공'],
-    mapUrl: 'https://map.kakao.com/link/map/달리야드,33.2541,126.5601'
-  },
-  3: {
-    id: 3,
-    name: '누운 섶',
-    location: '제주도 제주시',
-    description: '누운 섶은 제주의 전통과 현대가 만나는 독특한 숙소입니다. 자연 속에서 편안한 휴식을 즐기실 수 있는 공간을 제공합니다.',
-    price: 390000,
-    image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '정원', '차 시연', '문화 체험'],
-    mapUrl: 'https://map.kakao.com/link/map/누운 섶,33.4996,126.5312'
-  },
-  4: {
-    id: 4,
-    name: '그리드 제주',
-    location: '경기도 가평군',
-    description: '그리드 제주는 현대적인 디자인과 편안함이 조화를 이루는 숙소입니다. 깔끔한 라인과 미니멀한 공간에서 특별한 휴식을 경험하세요.',
-    price: 280000,
-    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '미니멀 디자인', '테라스', '커피머신', '스마트홈'],
-    mapUrl: 'https://map.kakao.com/link/map/그리드 제주,37.8315,127.5095'
-  },
-  5: {
-    id: 5,
-    name: '서와정',
-    location: '강원도 평창군',
-    description: '서와정은 전통 한옥의 아름다움을 현대적으로 재해석한 프리미엄 숙소입니다. 자연과 조화를 이루는 공간에서 평화로운 시간을 보내세요.',
-    price: 420000,
-    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '온돌', '정원', '차 시연'],
-    mapUrl: 'https://map.kakao.com/link/map/서와정,37.3745,128.3905'
-  },
-  6: {
-    id: 6,
-    name: '조각밤',
-    location: '충청남도 태안군',
-    description: '조각밤은 바다와 함께하는 특별한 숙소입니다. 아름다운 해변과 조용한 밤하늘을 감상할 수 있는 로맨틱한 공간을 제공합니다.',
-    price: 310000,
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '해변 접근', '바베큐 시설', '야외 테라스']
-  },
-  7: {
-    id: 7,
-    name: '숲속의 집',
-    location: '전라남도 여수시',
-    description: '숲속의 집은 깊은 숲 속에서 자연과 함께하는 힐링 숙소입니다. 신선한 공기와 아름다운 자연 경관을 만끽하실 수 있습니다.',
-    price: 380000,
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '숲뷰', '등산로', '캠프파이어', '자전거 대여']
-  },
-  8: {
-    id: 8,
-    name: '바다뷰 펜션',
-    location: '경상남도 거제시',
-    description: '바다뷰 펜션은 아름다운 바다를 한눈에 볼 수 있는 프리미엄 펜션입니다. 넓은 테라스와 최신 시설을 갖춘 객실에서 편안한 휴식을 즐기실 수 있습니다.',
-    price: 450000,
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '수영장', '바베큐 시설', '조식 제공']
-  },
-  9: {
-    id: 9,
-    name: '산중턱 별장',
-    location: '강원도 강릉시',
-    description: '산중턱 별장은 산의 정상에서 아름다운 경관을 감상할 수 있는 럭셔리 별장입니다. 프리미엄 서비스와 최고급 시설을 제공합니다.',
-    price: 520000,
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '발렛파킹', '산뷰', '스파', '피트니스센터', '레스토랑']
-  },
-  10: {
-    id: 10,
-    name: '도시의 오아시스',
-    location: '충청북도 단양군',
-    description: '도시의 오아시스는 도시 한가운데에서 편안한 휴식을 제공하는 특별한 숙소입니다. 현대적이면서도 따뜻한 분위기를 연출합니다.',
-    price: 290000,
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '시티뷰', '피트니스센터', '카페', '스마트홈']
-  },
-  11: {
-    id: 11,
-    name: '전원생활',
-    location: '전라북도 전주시',
-    description: '전원생활은 전주의 전통과 현대가 만나는 특별한 숙소입니다. 한옥의 아름다움과 현대적인 편의시설을 모두 경험하실 수 있습니다.',
-    price: 360000,
-    image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '온돌', '정원', '문화 체험']
-  },
-  12: {
-    id: 12,
-    name: '힐링 스테이',
-    location: '경상북도 안동시',
-    description: '힐링 스테이는 안동의 아름다운 자연 속에서 편안한 휴식을 제공하는 숙소입니다. 전통과 현대가 조화를 이루는 공간입니다.',
-    price: 340000,
-    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '산뷰', '정원', '차 시연', '문화 체험']
-  },
-  13: {
-    id: 13,
-    name: '감성숙소',
-    location: '제주도 서귀포시',
-    description: '감성숙소는 제주의 아름다운 자연과 감성적인 분위기를 담은 특별한 숙소입니다. 로맨틱한 분위기에서 특별한 추억을 만드세요.',
-    price: 410000,
-    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '로맨틱 데코', '야외 테라스', '조식 제공']
-  },
-  14: {
-    id: 14,
-    name: '평화로운 휴식',
-    location: '강원도 춘천시',
-    description: '평화로운 휴식은 춘천의 아름다운 자연 속에서 편안한 휴식을 제공하는 숙소입니다. 조용하고 평화로운 분위기에서 힐링하세요.',
-    price: 320000,
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '호수뷰', '정원', '등산로', '자전거 대여']
-  },
-  15: {
-    id: 15,
-    name: '자연 속 숙소',
-    location: '충청남도 공주시',
-    description: '자연 속 숙소는 공주의 아름다운 자연과 함께하는 특별한 숙소입니다. 자연과 조화를 이루는 공간에서 편안한 휴식을 경험하세요.',
-    price: 480000,
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '숲뷰', '정원', '캠프파이어', '자전거 대여']
-  },
-  16: {
-    id: 16,
-    name: '힐링 펜션',
-    location: '전라남도 순천시',
-    description: '힐링 펜션은 순천만의 아름다운 자연 속에서 편안한 휴식을 제공하는 펜션입니다. 자연과 함께하는 특별한 경험을 제공합니다.',
-    price: 370000,
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '만뷰', '정원', '바베큐 시설', '조식 제공']
-  },
-  17: {
-    id: 17,
-    name: '산악 휴양지',
-    location: '경상남도 통영시',
-    description: '산악 휴양지는 통영의 아름다운 산과 바다를 동시에 감상할 수 있는 특별한 숙소입니다. 자연과 함께하는 프리미엄 휴양지입니다.',
-    price: 390000,
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '산뷰', '오션뷰', '등산로', '수영장']
-  },
-  18: {
-    id: 18,
-    name: '바다 근처 숙소',
-    location: '강원도 속초시',
-    description: '바다 근처 숙소는 속초의 아름다운 바다를 한눈에 볼 수 있는 프리미엄 숙소입니다. 바다와 함께하는 특별한 휴식을 경험하세요.',
-    price: 550000,
-    image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '해변 접근', '수영장', '바베큐 시설']
-  },
-  19: {
-    id: 19,
-    name: '보스케',
-    location: '제주도 제주시',
-    description: '보스케는 제주의 아름다운 자연 속에서 현대적인 편안함을 제공하는 특별한 숙소입니다. 미니멀한 디자인과 최신 시설을 갖추고 있습니다.',
-    price: 480000,
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '미니멀 디자인', '테라스', '커피머신', '스마트홈']
-  },
-  20: {
-    id: 20,
-    name: '마당과 정원',
-    location: '경기도 포천시',
-    description: '마당과 정원은 포천의 아름다운 자연 속에서 전통과 현대가 조화를 이루는 특별한 숙소입니다. 넓은 마당과 아름다운 정원을 제공합니다.',
-    price: 320000,
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '정원', '마당', '바베큐 시설', '자전거 대여']
-  },
-  21: {
-    id: 21,
-    name: '객실 내부',
-    location: '충청북도 제천시',
-    description: '객실 내부는 제천의 아름다운 자연 속에서 편안한 휴식을 제공하는 특별한 숙소입니다. 현대적이면서도 따뜻한 분위기를 연출합니다.',
-    price: 410000,
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '산뷰', '테라스', '커피머신', '스마트홈']
-  }
-}
+
 
 const AccommodationDetailPage = () => {
   const router = useRouter()
+  const { t } = useLanguage()
+  
+  const accommodationData = {
+    1: {
+      id: 1,
+      name: t('accommodation.names.neulimihak'),
+      location: t('location.gyeongju'),
+      description: t('accommodation.descriptions.neulimihak'),
+      price: 330000,
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '정원', '차 시연', '문화 체험'],
+      mapUrl: 'https://map.kakao.com/link/map/느린미학,35.8428,129.2117',
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 4${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    2: {
+      id: 2,
+      name: t('accommodation.names.dallyard'),
+      location: t('location.jeju_seogwipo'),
+      description: t('accommodation.descriptions.dallyard'),
+      price: 350000,
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '바베큐 시설', '수영장', '조식 제공'],
+      mapUrl: 'https://map.kakao.com/link/map/달리야드,33.2541,126.5601',
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 4${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    3: {
+      id: 3,
+      name: t('accommodation.names.nuun_seop'),
+      location: t('location.jeju_city'),
+      description: t('accommodation.descriptions.nuun_seop'),
+      price: 390000,
+      image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '정원', '차 시연', '문화 체험'],
+      mapUrl: 'https://map.kakao.com/link/map/누운 섶,33.4996,126.5312',
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 6${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    4: {
+      id: 4,
+      name: t('accommodation.names.forest_house'),
+      location: t('location.gapyeong'),
+      description: '숲속의 집은 깊은 숲 속에서 자연과 함께하는 힐링 숙소입니다. 신선한 공기와 아름다운 자연 경관을 만끽하실 수 있습니다.',
+      price: 280000,
+      image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '미니멀 디자인', '테라스', '커피머신', '스마트홈'],
+      mapUrl: 'https://map.kakao.com/link/map/그리드 제주,37.8315,127.5095',
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 4${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    5: {
+      id: 5,
+      name: t('magazine.seowajeong'),
+      location: t('location.pyeongchang'),
+      description: '서와정은 전통 한옥의 아름다움을 현대적으로 재해석한 프리미엄 숙소입니다. 자연과 조화를 이루는 공간에서 평화로운 시간을 보내세요.',
+      price: 420000,
+      image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '온돌', '정원', '차 시연'],
+      mapUrl: 'https://map.kakao.com/link/map/서와정,37.3745,128.3905',
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 6${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    6: {
+      id: 6,
+      name: t('promotion.jogak_night'),
+      location: t('location.taean'),
+      description: '조각밤은 바다와 함께하는 특별한 숙소입니다. 아름다운 해변과 조용한 밤하늘을 감상할 수 있는 로맨틱한 공간을 제공합니다.',
+      price: 310000,
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '해변 접근', '바베큐 시설', '야외 테라스'],
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 4${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    7: {
+      id: 7,
+      name: t('accommodation.names.forest_house'),
+      location: t('location.yeosu'),
+      description: '숲속의 집은 깊은 숲 속에서 자연과 함께하는 힐링 숙소입니다. 신선한 공기와 아름다운 자연 경관을 만끽하실 수 있습니다.',
+      price: 380000,
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '숲뷰', '등산로', '캠프파이어', '자전거 대여'],
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 5${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    8: {
+      id: 8,
+      name: t('accommodation.names.ocean_view_pension'),
+      location: t('location.geoje'),
+      description: '바다뷰 펜션은 아름다운 바다를 한눈에 볼 수 있는 프리미엄 펜션입니다. 넓은 테라스와 최신 시설을 갖춘 객실에서 편안한 휴식을 즐기실 수 있습니다.',
+      price: 450000,
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '수영장', '바베큐 시설', '조식 제공'],
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 6${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    9: {
+      id: 9,
+      name: t('accommodation.names.mountain_villa'),
+      location: t('location.gangneung'),
+      description: '산중턱 별장은 산의 정상에서 아름다운 경관을 감상할 수 있는 럭셔리 별장입니다. 프리미엄 서비스와 최고급 시설을 제공합니다.',
+      price: 520000,
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '발렛파킹', '산뷰', '스파', '피트니스센터', '레스토랑'],
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 4${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    },
+    10: {
+      id: 10,
+      name: t('accommodation.names.city_oasis'),
+      location: t('location.danyang'),
+      description: '도시의 오아시스는 도시 한가운데에서 편안한 휴식을 제공하는 특별한 숙소입니다. 현대적이면서도 따뜻한 분위기를 연출합니다.',
+      price: 290000,
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+      amenities: ['무료 Wi-Fi', '주차 가능', '시티뷰', '피트니스센터', '카페', '스마트홈'],
+      roomInfo: {
+        capacity: `2${t('accommodation.people')}(${t('accommodation.max_capacity')} 5${t('accommodation.people')})`,
+        checkIn: '15:00',
+        checkOut: '11:00',
+        area: '65.8m²',
+        spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+        bedTypes: '퀸(1), 싱글(1)'
+      }
+    }
+  }
+
   const { id } = router.query
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0)
   const [activeTab, setActiveTab] = React.useState('위치안내')
@@ -1290,12 +1268,20 @@ const AccommodationDetailPage = () => {
   const [point2Index, setPoint2Index] = React.useState(0)
   const [point3Index, setPoint3Index] = React.useState(0)
 
-  const accommodation = accommodationData[id as unknown as keyof typeof accommodationData]
+  const [accommodation, setAccommodation] = React.useState<any>(null)
   
   // 이미지 개수와 한 번에 보이는 개수로 최대 인덱스 계산
   const totalImages = 6
   const imagesPerView = 2
   const maxIndex = Math.ceil(totalImages / imagesPerView) - 1
+
+  // accommodation 데이터가 변경될 때마다 accommodation 상태 업데이트
+  React.useEffect(() => {
+    if (id && accommodationData) {
+      const currentAccommodation = accommodationData[id as unknown as keyof typeof accommodationData]
+      setAccommodation(currentAccommodation)
+    }
+  }, [id, t])
 
   // 페이지 로드 시 스크롤을 맨 위로 이동
   React.useEffect(() => {
@@ -1384,7 +1370,7 @@ const AccommodationDetailPage = () => {
     setActiveTab(tabName)
   }
 
-  if (!accommodation) {
+  if (!accommodation || !id) {
     return (
       <Container>
         <Header isScrolled={true} isDetailPage={true} />
@@ -1417,23 +1403,23 @@ const AccommodationDetailPage = () => {
             <MainImage src={accommodation.image} alt={accommodation.name} />
             
             <ImageOverlay>
-              <EnglishTitle>Rest in a cluster of stars</EnglishTitle>
-              <KoreanTitle>별의 군락 속에서 맞이하는 안식</KoreanTitle>
+              <EnglishTitle>{t('accommodation.hero_title_en')}</EnglishTitle>
+              <KoreanTitle>{t('accommodation.hero_title_kr')}</KoreanTitle>
             </ImageOverlay>
             
             <BookingBar>
               <BookingInfo>
                 <BookingItem>
-                  <BookingLabel>체크인</BookingLabel>
+                  <BookingLabel>{t('accommodation.booking_checkin')}</BookingLabel>
                   <BookingValue>09.02 (화)</BookingValue>
                 </BookingItem>
                 <BookingItem>
-                  <BookingLabel>체크아웃</BookingLabel>
+                  <BookingLabel>{t('accommodation.booking_checkout')}</BookingLabel>
                   <BookingValue>09.03 (수)</BookingValue>
                 </BookingItem>
                 <BookingItem>
-                  <BookingLabel>인원</BookingLabel>
-                  <BookingValue>성인 2명</BookingValue>
+                  <BookingLabel>{t('accommodation.booking_people')}</BookingLabel>
+                  <BookingValue>{t('accommodation.booking_adult')} 2{t('accommodation.booking_people_count')}</BookingValue>
                 </BookingItem>
               </BookingInfo>
             </BookingBar>
@@ -1442,17 +1428,17 @@ const AccommodationDetailPage = () => {
                     <RoomDetailContainer>
             <RoomDetailContent>
               <RoomTypeSection>
-                <RoomTypeTitle>객실타입</RoomTypeTitle>
+                <RoomTypeTitle>{t('accommodation.room_type')}</RoomTypeTitle>
                 <RoomCard>
                   <RoomImage>
                     <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop" alt="뭇별 객실" />
                   </RoomImage>
                   <RoomInfo>
                     <RoomHeader>
-                      <RoomName>{accommodation.name}</RoomName>
-                      <RoomCapacity>기준 2인 (최대 6인)</RoomCapacity>
-                      <RoomDetails>침실(2) 화장실(3) 거실(1) 주방(1)</RoomDetails>
-                      <RoomTimes>체크인 15:00 - 체크아웃 11:00</RoomTimes>
+                              <RoomName>{accommodation.name}</RoomName>
+        <RoomCapacity>{t('accommodation.standard_capacity')}</RoomCapacity>
+        <RoomDetails>{t('accommodation.room_details')}</RoomDetails>
+        <RoomTimes>{t('accommodation.checkin_time')}</RoomTimes>
                     </RoomHeader>
                     <Line />
                     <RoomPrice>
@@ -1463,10 +1449,10 @@ const AccommodationDetailPage = () => {
                         </OriginalPrice>
                         <DiscountPrice>
                           {(accommodation.price * 0.95).toLocaleString()}원
-                          <PriceUnit>/ 1박</PriceUnit>
+                          <PriceUnit>{t('accommodation.per_night')}</PriceUnit>
                         </DiscountPrice>
                       </PriceInfo>
-                      <BookNowButton>예약하기</BookNowButton>
+                      <BookNowButton>{t('accommodation.book_now')}</BookNowButton>
                     </RoomPrice>
                   </RoomInfo>
                 </RoomCard>
@@ -1476,7 +1462,7 @@ const AccommodationDetailPage = () => {
           
           <PropertySection>
             <PropertyContent>
-              <PropertyTitle>바다와 대나무, 별의 울림이 깃든 공간</PropertyTitle>
+              <PropertyTitle>{t('accommodation.room_description')}</PropertyTitle>
               
               <PropertyImage>
                 <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop" alt="바다와 대나무, 별의 울림이 깃든 공간" />
@@ -1484,13 +1470,13 @@ const AccommodationDetailPage = () => {
               
               <PropertyDescription>
                 <DescriptionText>
-                  이곳은 바다를 향해 열린 프라이빗한 공간으로, 노출 콘크리트와 유리, 대나무를 활용하여 자연의 요소를 건축 안으로 들였다. 마당의 수공간과 실내외를 잇는 통유리창은 외부의 풍경을 내부로 끌어들이며, 어느 곳에서든 자연을 감상할 수 있게 한다.
+                  {t('accommodation.room_description_detail1')}
                 </DescriptionText>
                 <DescriptionText>
-                  객실 내부는 미니멀한 디자인으로 꾸며져 있으며, 필요한 모든 편의시설을 갖추고 있어 편안한 휴식을 제공한다. 공간에 들어서면 가장 먼저 대나무가 바람에 스치는 소리가 방문객을 맞이한다. 이는 자연이 연주하는 음악처럼, 마음의 평온을 가져다준다.
+                  {t('accommodation.room_description_detail2')}
                 </DescriptionText>
                 <DescriptionText>
-                  내부의 욕조에 몸을 담그고 창밖의 대나무 숲을 바라보며 온전한 쉼을 경험할 수 있다. 프라이빗한 마당에는 사계절 내내 즐길 수 있는 온수풀이 마련되어 있다. 따뜻한 물에 몸을 담그고, 변화하는 자연의 풍경을 감상하며 여유로운 시간을 보낼 수 있다.
+                  {t('accommodation.room_description_detail3')}
                 </DescriptionText>
               </PropertyDescription>
             </PropertyContent>
@@ -1520,11 +1506,11 @@ const AccommodationDetailPage = () => {
               <PointTextSection>
                 <PointLeftSection>
                   <PointNumber>Point 1</PointNumber>
-                  <PointTitle>대나무가 전하는 치유의 소리</PointTitle>
+                  <PointTitle>{t('accommodation.point1.title')}</PointTitle>
                 </PointLeftSection>
                 <PointRightSection>
                   <PointDescription>
-                    바람에 흩날리는 대나무숲의 소리에 집중해 보세요. 뭇별은 대나무로 둘러싸인 자연 속에 위치하여 머무는 내내 대나무의 싱그러운 초록빛을 누릴 수 있습니다. 뭇별의 담벼락이 되어주는 대나무는 침실, 거실, 화장실까지 그 싱그러운 빛을 내어주어 치유의 에너지를 전해줍니다. 특히 울창히 펼쳐진 대나무 숲과 그 끝에 보이는 삼척 바다, 뭇별의 자쿠지에서 맞이하는 경관은 오래도록 잊지 못할 치유가 되어줄 겁니다.
+                    {t('accommodation.point1.description')}
                   </PointDescription>
                 </PointRightSection>
               </PointTextSection>
@@ -1555,11 +1541,11 @@ const AccommodationDetailPage = () => {
               <PointTextSection>
                 <PointLeftSection>
                   <PointNumber>Point 2</PointNumber>
-                  <PointTitle>계절이 머무는 마당</PointTitle>
+                  <PointTitle>{t('accommodation.point2.title')}</PointTitle>
                 </PointLeftSection>
                 <PointRightSection>
                   <PointDescription>
-                    프라이빗한 마당에는 사계절 내내 즐길 수 있는 온수풀이 마련되어 있습니다. 따뜻한 물에 몸을 담그고, 변화하는 자연의 풍경을 감상하며 여유로운 시간을 보낼 수 있습니다. 밤에는 별이 쏟아지는 하늘 아래에서 낭만적인 수영을 즐겨보세요. 마당 한가운데 자리 잡은 온수풀은 계절의 변화를 온몸으로 느낄 수 있는 특별한 공간입니다. 봄에는 새싹이 돋아나는 소리, 여름에는 매미 울음소리, 가을에는 낙엽이 떨어지는 소리, 겨울에는 고요한 적막함까지 모든 계절의 아름다움을 담고 있습니다.
+                    {t('accommodation.point2.description')}
                   </PointDescription>
                 </PointRightSection>
               </PointTextSection>
@@ -1590,11 +1576,11 @@ const AccommodationDetailPage = () => {
               <PointTextSection>
                 <PointLeftSection>
                   <PointNumber>Point 3</PointNumber>
-                  <PointTitle>미니멀한 디자인의 편안함</PointTitle>
+                  <PointTitle>{t('accommodation.point3.title')}</PointTitle>
                 </PointLeftSection>
                 <PointRightSection>
                   <PointDescription>
-                    객실 내부는 미니멀한 디자인으로 꾸며져 있으며, 필요한 모든 편의시설을 갖추고 있어 편안한 휴식을 제공합니다. 통유리창을 통해 외부의 풍경을 내부로 끌어들이며, 어느 곳에서든 자연을 감상할 수 있습니다. 노출 콘크리트와 유리, 대나무를 활용하여 자연의 요소를 건축 안으로 들여온 디자인은 현대적이면서도 따뜻한 분위기를 연출합니다. 모든 공간에서 자연과의 조화를 느낄 수 있어 진정한 휴식과 치유의 시간을 보낼 수 있습니다.
+                    {t('accommodation.point3.description')}
                   </PointDescription>
                 </PointRightSection>
               </PointTextSection>
@@ -1609,7 +1595,7 @@ const AccommodationDetailPage = () => {
               margin: '0 210px 100px 210px' 
             }} />
             <RoomInfoContent>
-              <RoomInfoTitle>객실별 안내 사항</RoomInfoTitle>
+              <RoomInfoTitle>{t('accommodation.room_info.title')}</RoomInfoTitle>
               
               <RoomInfoImageSection currentIndex={currentImageIndex}>
                 <div style={{ 
@@ -1654,11 +1640,11 @@ const AccommodationDetailPage = () => {
               <RoomInfoDetails>
                 <RoomInfoName>{accommodation.name}</RoomInfoName>
                 <RoomInfoList>
-                  <RoomInfoItem>기준 인원 : {(accommodation as any).roomInfo?.capacity || '2명(최대 6명)'}</RoomInfoItem>
-                  <RoomInfoItem>체크인 : {(accommodation as any).roomInfo?.checkIn || '15:00'} / 체크아웃 {(accommodation as any).roomInfo?.checkOut || '11:00'}</RoomInfoItem>
-                  <RoomInfoItem>객실 면적 : {(accommodation as any).roomInfo?.area || '92.25m²'}</RoomInfoItem>
-                  <RoomInfoItem>객실 공간 : {(accommodation as any).roomInfo?.spaces || '침실(2), 화장실(3), 거실(1), 주방(1)'}</RoomInfoItem>
-                  <RoomInfoItem>침대 유형: {(accommodation as any).roomInfo?.bedTypes || '슈퍼싱글(1), 퀸(2)'}</RoomInfoItem>
+                  <RoomInfoItem>{t('accommodation.room_info.standard_capacity')} : {(accommodation as any).roomInfo?.capacity || `2${t('accommodation.room_info.people')}(${t('accommodation.room_info.max_people')} 6${t('accommodation.room_info.people')})`}</RoomInfoItem>
+                  <RoomInfoItem>{t('accommodation.room_info.checkin')} : {(accommodation as any).roomInfo?.checkIn || '15:00'} / {t('accommodation.room_info.checkout')} {(accommodation as any).roomInfo?.checkOut || '11:00'}</RoomInfoItem>
+                  <RoomInfoItem>{t('accommodation.room_info.area')} : {(accommodation as any).roomInfo?.area || '92.25m²'}</RoomInfoItem>
+                  <RoomInfoItem>{t('accommodation.room_info.spaces')} : {(accommodation as any).roomInfo?.spaces || t('accommodation.tab.room_spaces')}</RoomInfoItem>
+                  <RoomInfoItem>{t('accommodation.room_info.bed_types')}: {(accommodation as any).roomInfo?.bedTypes || '슈퍼싱글(1), 퀸(2)'}</RoomInfoItem>
                 </RoomInfoList>
               </RoomInfoDetails>
               <hr style={{ 
@@ -1673,9 +1659,9 @@ const AccommodationDetailPage = () => {
           <AmenitiesSection>
             <AmenitiesContent>
               <AmenitiesHeader>
-                <AmenitiesTitle>전 객실 포함 사항</AmenitiesTitle>
+                <AmenitiesTitle>{t('accommodation.amenities.title')}</AmenitiesTitle>
                 <ViewAllButton>
-                  전체보기
+                  {t('accommodation.amenities.view_all')}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M9 18l6-6-6-6"/>
                   </svg>
@@ -1689,7 +1675,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>드라이어</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.hair_dryer')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1698,7 +1684,7 @@ const AccommodationDetailPage = () => {
                       <path d="M8 12h8M12 8v8"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>커피머신</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.coffee_machine')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1706,7 +1692,7 @@ const AccommodationDetailPage = () => {
                       <path d="M3 7h18M3 11h18M3 15h18"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>욕실 어메니티</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.bathroom_amenities')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1714,7 +1700,7 @@ const AccommodationDetailPage = () => {
                       <path d="M9 12l2 2 4-4"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>손 세정제</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.hand_sanitizer')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1722,7 +1708,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>커피포트</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.coffee_pot')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1731,7 +1717,7 @@ const AccommodationDetailPage = () => {
                       <path d="M3 9h18"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>냉장고</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.refrigerator')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1739,7 +1725,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>에어컨</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.air_conditioner')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1748,7 +1734,7 @@ const AccommodationDetailPage = () => {
                       <path d="M17 2l-5 5-5-5"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>TV</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.tv')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1757,7 +1743,7 @@ const AccommodationDetailPage = () => {
                       <path d="M8 12h8M12 8v8"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>인덕션</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.induction')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1765,7 +1751,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>조리도구</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.cooking_utensils')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1773,7 +1759,7 @@ const AccommodationDetailPage = () => {
                       <path d="M8 12h8M12 8v8"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>식기</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.tableware')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1781,7 +1767,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>와인 오프너</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.wine_opener')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1789,7 +1775,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>와인잔</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.wine_glass')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1798,7 +1784,7 @@ const AccommodationDetailPage = () => {
                       <path d="M3 9h18"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>타올</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.towel')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1807,7 +1793,7 @@ const AccommodationDetailPage = () => {
                       <path d="M8 12h8M12 8v8"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>디퓨저</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.diffuser')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1815,7 +1801,7 @@ const AccommodationDetailPage = () => {
                       <path d="M12 2v20M2 12h20"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>조미료</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.condiments')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1823,7 +1809,7 @@ const AccommodationDetailPage = () => {
                       <path d="M8 12h8M12 8v8"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>외부용 슬리퍼</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.outdoor_slippers')}</AmenityName>
                 </AmenityItem>
                 <AmenityItem>
                   <AmenityIcon>
@@ -1832,45 +1818,45 @@ const AccommodationDetailPage = () => {
                       <path d="M3 9h18"/>
                     </svg>
                   </AmenityIcon>
-                  <AmenityName>전자레인지</AmenityName>
+                  <AmenityName>{t('accommodation.amenities.microwave')}</AmenityName>
                 </AmenityItem>
               </AmenitiesGrid>
             </AmenitiesContent>
           </AmenitiesSection>
           
           <InfoSection>
-            <InfoTitle>안내사항을 확인하세요</InfoTitle>
+            <InfoTitle>{t('accommodation.info.title')}</InfoTitle>
             
             <InfoTabs>
               <InfoTab 
                 active={activeTab === '위치안내'} 
                 onClick={() => handleTabClick('위치안내')}
               >
-                위치안내
+                {t('accommodation.info.location')}
               </InfoTab>
               <InfoTab 
                 active={activeTab === '이용규칙'} 
                 onClick={() => handleTabClick('이용규칙')}
               >
-                이용규칙
+                {t('accommodation.info.rules')}
               </InfoTab>
               <InfoTab 
                 active={activeTab === '환불정책'} 
                 onClick={() => handleTabClick('환불정책')}
               >
-                환불정책
+                {t('accommodation.info.refund')}
               </InfoTab>
               <InfoTab 
                 active={activeTab === '안전시설'} 
                 onClick={() => handleTabClick('안전시설')}
               >
-                안전시설
+                {t('accommodation.info.safety')}
               </InfoTab>
               <InfoTab 
                 active={activeTab === '요금정책'} 
                 onClick={() => handleTabClick('요금정책')}
               >
-                요금정책
+                {t('accommodation.info.pricing')}
               </InfoTab>
             </InfoTabs>
             
@@ -1879,13 +1865,13 @@ const AccommodationDetailPage = () => {
                 <>
                   <ContactInfo>
                     <ContactItem>
-                      주소: {accommodation.location}
+                      {t('accommodation.info.address')}: {accommodation.location}
                     </ContactItem>
                     <ContactItem>
-                      연락처: 010-2211-2143
+                      {t('accommodation.info.contact')}: 010-2211-2143
                     </ContactItem>
                     <ContactItem>
-                      이메일: lobyulygirl@gmail.com
+                      {t('accommodation.info.email')}: lobyulygirl@gmail.com
                     </ContactItem>
                   </ContactInfo>
                   
@@ -1915,165 +1901,165 @@ const AccommodationDetailPage = () => {
               {activeTab === '이용규칙' && (
                 <RulesContent>
                   <RulesSection>
-                    <RulesTitle>입실과 퇴실</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.checkin_checkout')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>체크인은 오후 3시, 체크아웃은 오전 11시입니다.</RulesItem>
-                      <RulesItem>기준인원 2인, 최대 6인(영유아포함)이며 성인 및 아동은 5인까지입니다. 최대 인원 초과시 절대 입실이 불가합니다</RulesItem>
-                      <RulesItem>아동 적용 나이는 12세까지 입니다</RulesItem>
-                      <RulesItem>게스트 외 방문객은 기준인원 내 추가요금 부과 후 이용가능합니다(인원 초과시 불가)</RulesItem>
-                      <RulesItem>반려동물을 사랑하지만 여러사람이 사용하는 공간이기에 동반 입실은 불가합니다</RulesItem>
-                      <RulesItem>연박시 청소서비스는 제공되지 않습니다.</RulesItem>
+                      <RulesItem>{t('accommodation.tab.checkin_time')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.standard_capacity_detail')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.child_age')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.visitor_policy')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pet_policy')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.cleaning_service')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>객실</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.room')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>Yes-kids zone이나 어린이를 배려해서 설계된 공간이 아니므로 보호자님의 각별한 주의가 필요하며 부주의에 의한 사고시에 책임지지 않습니다. (자쿠지, 수영장, 계단 등의 공간은 특히 조심 해 주세요.)</RulesItem>
-                      <RulesItem>객실 내에서 고기, 생선, 튀김 등 냄새가 많이나거나 기름기가 많은 음식조리를 엄격히 금지합니다.</RulesItem>
-                      <RulesItem>입실 전 비품관리를 세게히 하고있습니다. 파손된 부분 등은 미리 말씀드리고있으니 체크 부탁드리며 입실 후 발생되는 심한오염, 튜브파손, 염색으로인한 오염, 등 회복어려운 훼손은 부득이 동일제품 구매가격을 청구나 수리비용이 청구되니 주의해 주시면 감사하겠습니다. (오염사례가 빈번한 염색, 아이들 슬라임 놀이등은 금해주시기 바랍니다.)</RulesItem>
-                      <RulesItem>식탁 및 싱크대가 나무로 되어 있기에 화기에 취약합니다. 조리시 가열된 냄비를 바로 올려놓지 않도록 주의 해주세요.</RulesItem>
-                      <RulesItem>실내슬리퍼는 실내에서만, 외부슬리퍼는 정원내에서만 사용 부탁드립니다.</RulesItem>
+                      <RulesItem>{t('accommodation.tab.room_kids_warning')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.room_cooking_ban')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.room_damage_policy')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.room_wood_care')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.room_slippers')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>야외활동 및 안전</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.outdoor_safety')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>화재의 위험성으로 가든내에서의 흠연, 촛불 및 불꽃놀이, 개인화로, 부탄가스 등은 절대 사용금지입니다.</RulesItem>
+                      <RulesItem>{t('accommodation.tab.outdoor_fire_ban')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>자쿠지안내</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.jacuzzi_guide')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>자쿠지에 비치된 안내사항을 참고 부탁드립니다.</RulesItem>
-                      <RulesItem>준비된 입욕제 외 사용시 욕조가 물들 수 있어 모든 개인입욕제 사용을 금지하며 개인입욕제 사용 후 물듬경우 부득이 청소요금이 부과되오니 주의 부탁드립니다.</RulesItem>
-                      <RulesItem>욕조물이 넘치지 않도록 주의 바랍니다. (물 받는 시간 40분 소요)</RulesItem>
-                      <RulesItem>자쿠지 내부 논슬립 시공 후 최대한 안전하게 조치를 하였으나(둥글게 갈아냄) 거칠게 느껴질 수 있으니 가벼운 옷, 수영복 착용 후 이용하시기 바랍니다.</RulesItem>
-                      <RulesItem>유아.어린이 사용시 꼭 보호자 동반하에 이용 바랍니다.</RulesItem>
-                      <RulesItem>사용 후 받은 물은 완전히 배수 부탁드립니다.</RulesItem>
-                      <RulesItem>자쿠지 마개는 손잡이 부분이 위쪽으로 향하도록 닫아주시고 혹시 뒤집어 닫으셨을 경우에는 당황하지 마시고 연락 부탁드립니다.</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_notice')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_bath_salt')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_water_overflow')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_surface')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_children')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_drain')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.jacuzzi_plug')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>바베큐 안내</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.barbecue_guide')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>바베큐를 옵션에서 추가하신 경우 전기그릴이 준비됩니다.</RulesItem>
-                      <RulesItem>눈.비. 강풍시 이용이 무조건 불가합니다</RulesItem>
-                      <RulesItem>입실당일 날씨확인 후 고기류 장보기 해주세요</RulesItem>
-                      <RulesItem>바베큐 그릴 사용 후 키친타올로 가볍게 닦아주시고 꼭 코드를 뽑아주세요(화재위험)</RulesItem>
+                      <RulesItem>{t('accommodation.tab.barbecue_equipment')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.barbecue_weather')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.barbecue_shopping')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.barbecue_cleanup')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>수영장안내</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.pool_guide')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>수영장은 32-33도 미온수로 유지됩니다.</RulesItem>
-                      <RulesItem>야외수영장 특성상 수온은 날씨와 온도 영향을 많이 받으므로 체감온도는 다를 수 있습니다.</RulesItem>
-                      <RulesItem>수영장 내부가 점차적으로 깊어지는 형태로 논슬립 시공 되어있으나 뛰어 들어가는 행위는 안전사고를 유발하니 각별히 주의 부탁 드립니다.</RulesItem>
-                      <RulesItem>영유아는 방수 기저귀 착용 후 이용 부탁드립니다.</RulesItem>
-                      <RulesItem>외부수영장 특성상 낙엽. 곤충 등의 이물질이 유입될 수 있음을 알려드리며 구비된 뜰채를 사용하여 제거 후 사용 부탁드립니다.</RulesItem>
-                      <RulesItem>수질은 여과장치를 통해 관리되고 있으며 주기적인 청소를 진행하니 안심하고 사용 해 주세요.</RulesItem>
-                      <RulesItem>수영장에 입욕제 및 이물질(배뇨, 입욕제, 꽃잎, 거품, 모래)의 투입을 절대 삼가하여 주시기 바랍니다.</RulesItem>
-                      <RulesItem>수영장 수심은 0.2m~1.2m로 보호자의 동반 입수시에만 어린이의 이용이 가능하도록 협조 부탁드리며 안전사고에 유의 바랍니다.</RulesItem>
-                      <RulesItem>폭설, 태풍 등 기상악화에 따른 이용제한이 있을 수 있습니다. 게스트분들의 안전을 위한 조치이니 양해 부탁드립니다.</RulesItem>
-                      <RulesItem>수영장 이용시간 제한은 없으나 미온수는 4시~9시까지 유지됩니다.</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_temperature')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_weather_effect')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_depth')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_diaper')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_debris')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_water_quality')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_contamination')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_depth_range')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_weather_limit')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.pool_hours')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>에탄올불멍</RulesTitle>
+                    <RulesTitle>{t('accommodation.tab.ethanol_fire')}</RulesTitle>
                     <RulesList>
-                      <RulesItem>에탄올 불멍은 사전예약의 경우 사용하실 수 있도록 준비해 드립니다.</RulesItem>
-                      <RulesItem>준비된 에탄올을 골고루 투입구에 주입 후 불을 붙이면 수분 내로 타오릅니다.</RulesItem>
-                      <RulesItem>사용 중 에탄올을 추가 투입하는 행위는 매우 위험하니 도중에 에탄올을 투입라는 행위는 삼가주시기 바랍니다.</RulesItem>
-                      <RulesItem>기상상황에 따라 제한될 수 있습니다. 비오는날은 이용 불가합니다</RulesItem>
+                      <RulesItem>{t('accommodation.tab.ethanol_reservation')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.ethanol_usage')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.ethanol_danger')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.ethanol_weather')}</RulesItem>
                     </RulesList>
                   </RulesSection>
                   
                   <RulesSection>
-                    <RulesTitle>본채/별채 구비물품</RulesTitle>
-                    <RulesSubTitle>본채</RulesSubTitle>
+                    <RulesTitle>{t('accommodation.tab.supplies')}</RulesTitle>
+                    <RulesSubTitle>{t('accommodation.tab.main_building')}</RulesSubTitle>
                     <RulesList>
-                      <RulesItem>조미료(간장 오일 설탕 소금)</RulesItem>
-                      <RulesItem>토스터기, 전기포트, 캡슐커피머신, 인덕션, 정수기, 전자레인지</RulesItem>
-                      <RulesItem>디터람스브라운 스피커, 스탠바이미(넷플릭스)</RulesItem>
-                      <RulesItem>실내화 및 외부슬리퍼(흰색)</RulesItem>
-                      <RulesItem>빨래건조대, 튜브공기주입기</RulesItem>
-                      <RulesItem>성인용 튜브1, 아동용튜브1(요청시)</RulesItem>
-                      <RulesItem>비치타올</RulesItem>
-                      <RulesItem>모기기피제, 모기향, 벌레퇴치제, 물파스</RulesItem>
-                      <RulesItem>충전기 (c타입, 5핀, 아이폰)</RulesItem>
-                      <RulesItem>아기의자(요청시 제공)</RulesItem>
-                      <RulesItem>전기그릴 / 야외접이식 테이블(요청시)</RulesItem>
-                      <RulesItem>칫솔, 치약, 욕실어메니티, 입욕제</RulesItem>
-                      <RulesItem>샤워가운은 입실전 요청시에만 제공됩니다</RulesItem>
+                      <RulesItem>{t('accommodation.tab.seasoning')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.kitchen_appliances')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.entertainment')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.slippers')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.laundry')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.tubes')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.beach_towel')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.insect_repellent')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.chargers')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.baby_chair')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.grill_table')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.bathroom_supplies')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.bathrobe')}</RulesItem>
                     </RulesList>
                     
-                    <RulesSubTitle>별채</RulesSubTitle>
+                    <RulesSubTitle>{t('accommodation.tab.guest_house')}</RulesSubTitle>
                     <RulesList>
-                      <RulesItem>실내화 및 외부슬리퍼(흰색)</RulesItem>
-                      <RulesItem>마샬스피커</RulesItem>
-                      <RulesItem>충전기(c타입, 5핀, 아이폰)</RulesItem>
-                      <RulesItem>칫솔, 치약, 욕실어메니티</RulesItem>
+                      <RulesItem>{t('accommodation.tab.slippers')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.marshall_speaker')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.chargers')}</RulesItem>
+                      <RulesItem>{t('accommodation.tab.bathroom_supplies')}</RulesItem>
                     </RulesList>
                     
                     <RulesNote>
-                      *구비 물품 외 아기식기 및 유아용품, 폼클렌징, 화장품은 준비 해 주세요.
+                      {t('accommodation.tab.supplies_note')}
                       <br />
-                      *모든 비품은 입실전 정상작동 체크하며 퇴실시 파손발견된 경우 배상요구됩니다
+                      {t('accommodation.tab.damage_note')}
                     </RulesNote>
                   </RulesSection>
-                                 </RulesContent>
+                </RulesContent>
                )}
                
                {activeTab === '환불정책' && (
                  <RefundContent>
                    <RefundTable>
                      <RefundTableHeader>
-                       <RefundTableHeaderCell>기준일</RefundTableHeaderCell>
-                       <RefundTableHeaderCell>환불 금액</RefundTableHeaderCell>
+                       <RefundTableHeaderCell>{t('accommodation.tab.refund_date')}</RefundTableHeaderCell>
+                       <RefundTableHeaderCell>{t('accommodation.tab.refund_amount')}</RefundTableHeaderCell>
                      </RefundTableHeader>
                      <RefundTableBody>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 20일 전까지</RefundTableCell>
-                         <RefundTableCell>100% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_20_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_100')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 14일 전까지</RefundTableCell>
-                         <RefundTableCell>90% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_14_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_90')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 8일 전까지</RefundTableCell>
-                         <RefundTableCell>80% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_8_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_80')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 7일 전까지</RefundTableCell>
-                         <RefundTableCell>70% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_7_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_70')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 6일 전까지</RefundTableCell>
-                         <RefundTableCell>60% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_6_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_60')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 5일 전까지</RefundTableCell>
-                         <RefundTableCell>50% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_5_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_50')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 4일 전까지</RefundTableCell>
-                         <RefundTableCell>40% 환불</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_4_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_40')}</RefundTableCell>
                        </RefundTableRow>
                        <RefundTableRow>
-                         <RefundTableCell>체크인 3일 전부터</RefundTableCell>
-                         <RefundTableCell>환불 불가</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_3_days')}</RefundTableCell>
+                         <RefundTableCell>{t('accommodation.tab.refund_no')}</RefundTableCell>
                        </RefundTableRow>
                      </RefundTableBody>
                    </RefundTable>
                    
                    <RefundNote>
-                     환불 수수료는 예약 완료 후 24시간 이내 취소와 관련없이 무조건 환불규정을 따름
+                     {t('accommodation.tab.refund_note')}
                    </RefundNote>
                  </RefundContent>
                )}
@@ -2081,17 +2067,17 @@ const AccommodationDetailPage = () => {
                {activeTab === '안전시설' && (
                  <SafetyContent>
                    <SafetySection>
-                     <SafetyTitle>소화기</SafetyTitle>
+                     <SafetyTitle>{t('accommodation.tab.fire_extinguisher')}</SafetyTitle>
                      <SafetyList>
-                       <SafetyItem>본채-객실 내 1층 화장실</SafetyItem>
-                       <SafetyItem>별채-세면대 아래 수납함</SafetyItem>
+                       <SafetyItem>{t('accommodation.tab.fire_main_building')}</SafetyItem>
+                       <SafetyItem>{t('accommodation.tab.fire_guest_house')}</SafetyItem>
                      </SafetyList>
                    </SafetySection>
                    
                    <SafetySection>
-                     <SafetyTitle>상비약</SafetyTitle>
+                     <SafetyTitle>{t('accommodation.tab.first_aid')}</SafetyTitle>
                      <SafetyList>
-                       <SafetyItem>물파스, 모기기피제, 대일밴드, 소독약</SafetyItem>
+                       <SafetyItem>{t('accommodation.tab.first_aid_items')}</SafetyItem>
                      </SafetyList>
                    </SafetySection>
                  </SafetyContent>
@@ -2102,61 +2088,61 @@ const AccommodationDetailPage = () => {
                    <PricingTitle>{accommodation.name}</PricingTitle>
                    
                    <PricingSection>
-                     <PricingSubTitle>기본 요금</PricingSubTitle>
+                     <PricingSubTitle>{t('accommodation.pricing.basic_rate')}</PricingSubTitle>
                      <PricingTable>
                        <PricingTableHeader>
-                         <PricingTableHeaderCell>평일</PricingTableHeaderCell>
-                         <PricingTableHeaderCell>주말</PricingTableHeaderCell>
+                         <PricingTableHeaderCell>{t('accommodation.pricing.weekday')}</PricingTableHeaderCell>
+                         <PricingTableHeaderCell>{t('accommodation.pricing.weekend')}</PricingTableHeaderCell>
                        </PricingTableHeader>
                        <PricingTableBody>
                          <PricingTableRow>
-                           <PricingTableCell>{accommodation.price.toLocaleString()}원</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 50000).toLocaleString()}원~</PricingTableCell>
+                           <PricingTableCell>{accommodation.price.toLocaleString()}{t('common.currency_unit')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 50000).toLocaleString()}{t('common.currency_unit')}~</PricingTableCell>
                          </PricingTableRow>
                        </PricingTableBody>
                      </PricingTable>
                    </PricingSection>
                    
                    <PricingSection>
-                     <PricingSubTitle>성수기 요금</PricingSubTitle>
+                     <PricingSubTitle>{t('accommodation.pricing.peak_season_rate')}</PricingSubTitle>
                      <PricingTable>
                        <PricingTableHeader>
-                         <PricingTableHeaderCell>구분</PricingTableHeaderCell>
-                         <PricingTableHeaderCell>평일</PricingTableHeaderCell>
-                         <PricingTableHeaderCell>주말</PricingTableHeaderCell>
+                         <PricingTableHeaderCell>{t('accommodation.pricing.category')}</PricingTableHeaderCell>
+                         <PricingTableHeaderCell>{t('accommodation.pricing.weekday')}</PricingTableHeaderCell>
+                         <PricingTableHeaderCell>{t('accommodation.pricing.weekend')}</PricingTableHeaderCell>
                        </PricingTableHeader>
                        <PricingTableBody>
                          <PricingTableRow>
-                           <PricingTableCell>준성수기</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 100000).toLocaleString()}원</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원~</PricingTableCell>
+                           <PricingTableCell>{t('accommodation.pricing.off_peak')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 100000).toLocaleString()}{t('common.currency_unit')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}{t('common.currency_unit')}~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
-                           <PricingTableCell>준성수기</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 100000).toLocaleString()}원</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원~</PricingTableCell>
+                           <PricingTableCell>{t('accommodation.pricing.off_peak')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 100000).toLocaleString()}{t('common.currency_unit')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}{t('common.currency_unit')}~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
-                           <PricingTableCell>성수기</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 200000).toLocaleString()}원~</PricingTableCell>
+                           <PricingTableCell>{t('accommodation.pricing.peak')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}{t('common.currency_unit')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 200000).toLocaleString()}{t('common.currency_unit')}~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
-                           <PricingTableCell>성수기</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 200000).toLocaleString()}원~</PricingTableCell>
+                           <PricingTableCell>{t('accommodation.pricing.peak')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}{t('common.currency_unit')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 200000).toLocaleString()}{t('common.currency_unit')}~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
-                           <PricingTableCell>극성수기</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 280000).toLocaleString()}원</PricingTableCell>
-                           <PricingTableCell>{(accommodation.price + 280000).toLocaleString()}원~</PricingTableCell>
+                           <PricingTableCell>{t('accommodation.pricing.high_peak')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 280000).toLocaleString()}{t('common.currency_unit')}</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 280000).toLocaleString()}{t('common.currency_unit')}~</PricingTableCell>
                          </PricingTableRow>
                        </PricingTableBody>
                      </PricingTable>
                    </PricingSection>
                    
                    <PricingNote>
-                     자세한 요금은 일정 선택 후 확인하시길 바랍니다.
+                     {t('accommodation.pricing.note')}
                    </PricingNote>
                  </PricingContent>
                )}
@@ -2168,34 +2154,34 @@ const AccommodationDetailPage = () => {
               <ExperiencePanel>
                 <ExperienceImage 
                   src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop" 
-                  alt="여주현 : 동천" 
+                  alt={t('experience.yeoju.title')} 
                 />
                 <ExperienceOverlay>
-                  <ExperienceTitle>여주현 : 동천</ExperienceTitle>
-                  <ExperienceSubtitle>아름다운 산세 속 하룻밤의 신선놀음</ExperienceSubtitle>
+                  <ExperienceTitle>{t('experience.yeoju.title')}</ExperienceTitle>
+                  <ExperienceSubtitle>{t('experience.yeoju.subtitle')}</ExperienceSubtitle>
                 </ExperienceOverlay>
               </ExperiencePanel>
               
               <ExperiencePanel>
                 <ExperienceImage 
                   src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop" 
-                  alt="레이어 한옥 하우스" 
+                  alt={t('experience.layr.subtitle')} 
                 />
                 <ExperienceOverlay>
-                  <ExperienceTitle>LAYR</ExperienceTitle>
-                  <ExperienceSubtitle>레이어 한옥 하우스</ExperienceSubtitle>
-                  <ExperienceDescription>내면의 취향을 일깨우는 공간</ExperienceDescription>
+                  <ExperienceTitle>{t('experience.layr.title')}</ExperienceTitle>
+                  <ExperienceSubtitle>{t('experience.layr.subtitle')}</ExperienceSubtitle>
+                  <ExperienceDescription>{t('experience.layr.description')}</ExperienceDescription>
                 </ExperienceOverlay>
               </ExperiencePanel>
               
               <ExperiencePanel>
                 <ExperienceImage 
                   src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop" 
-                  alt="고유시차" 
+                  alt={t('experience.timezone.title')} 
                 />
                 <ExperienceOverlay>
-                  <ExperienceTitle>고유시차</ExperienceTitle>
-                  <ExperienceSubtitle>우리만을 위한 고유한 시간</ExperienceSubtitle>
+                  <ExperienceTitle>{t('experience.timezone.title')}</ExperienceTitle>
+                  <ExperienceSubtitle>{t('experience.timezone.subtitle')}</ExperienceSubtitle>
                 </ExperienceOverlay>
               </ExperiencePanel>
             </ExperienceTopSection>
@@ -2203,18 +2189,17 @@ const AccommodationDetailPage = () => {
             <ExperienceBottomSection>
               <ExperienceBottomImage 
                 src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=400&fit=crop" 
-                alt="이상적 하루의 경험" 
+                alt={t('experience.ideal.title')} 
               />
               <ExperienceBottomOverlay>
-                <ExperienceBottomTitle>이상적 하루의 경험</ExperienceBottomTitle>
-                <ExperienceBottomSubtitle>스테이그라운드와 함께하기</ExperienceBottomSubtitle>
+                <ExperienceBottomTitle>{t('experience.ideal.title')}</ExperienceBottomTitle>
+                <ExperienceBottomSubtitle>{t('experience.ideal.subtitle')}</ExperienceBottomSubtitle>
               </ExperienceBottomOverlay>
             </ExperienceBottomSection>
           </ExperienceSection>
           
           <RoomInfoInquiryButton>
-            <span>문의</span>
-            <span>하기</span>
+            <span>{t('accommodation.inquiry')}</span>
           </RoomInfoInquiryButton>
         </ContentWrapper>
       </MainContent>

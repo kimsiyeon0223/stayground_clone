@@ -1,80 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import { useLanguage } from '../contexts/LanguageContext'
 
-// 숙소 더미 데이터
-const accommodationData = [
-  {
-    id: 1,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 2,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 3,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 4,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 5,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 6,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 7,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 8,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 9,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
-    category: 'PICK'
-  },
-  {
-    id: 10,
-    title: '둥글게 자리 잡은 평온함',
-    subtitle: '온원',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop',
-    category: 'PICK'
-  }
-]
+
 
 const SliderContainer = styled.div`
   display: flex;
@@ -103,11 +32,11 @@ const ContentSection = styled.div`
   overflow: hidden;
 `
 
-const TextContainer = styled.div<{ currentIndex: number }>`
+const TextContainer = styled.div<{ currentIndex: number; totalSlides: number }>`
   display: flex;
-  width: ${accommodationData.length * 100}%;
+  width: ${props => props.totalSlides * 100}%;
   transition: transform 1.5s ease-in-out;
-  transform: translateX(-${props => props.currentIndex * (100 / accommodationData.length)}%);
+  transform: translateX(-${props => props.currentIndex * (100 / props.totalSlides)}%);
 `
 
 const TextSlide = styled.div`
@@ -173,18 +102,19 @@ const RightPanel = styled.div`
 
 interface SlideContainerProps {
   currentIndex: number;
+  totalSlides: number;
 }
 
 const SlideContainer = styled.div<SlideContainerProps>`
   display: flex;
-  width: ${accommodationData.length * 100}%;
+  width: ${props => props.totalSlides * 100}%;
   height: 100%;
   transition: transform 1.5s ease-in-out;
-  transform: translateX(-${props => props.currentIndex * (100 / accommodationData.length)}%);
+  transform: translateX(-${props => props.currentIndex * (100 / props.totalSlides)}%);
 `
 
-const Slide = styled.div`
-  width: ${100 / accommodationData.length}%;
+const Slide = styled.div<{ totalSlides: number }>`
+  width: ${props => 100 / props.totalSlides}%;
   height: 100%;
   position: relative;
 `
@@ -208,9 +138,90 @@ const SlideImage = styled.div<{ imageUrl: string }>`
 
 
 const AccommodationSlider: React.FC = () => {
+  const router = useRouter()
+  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
-  const router = useRouter()
+
+  // 숙소 더미 데이터
+  const accommodationData = [
+    {
+      id: 1,
+      title: t('pick.title_1'),
+      subtitle: t('pick.subtitle_1'),
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 2,
+      title: t('pick.title_2'),
+      subtitle: t('pick.subtitle_2'),
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 3,
+      title: t('pick.title_3'),
+      subtitle: t('pick.subtitle_3'),
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 4,
+      title: t('pick.title_4'),
+      subtitle: t('pick.subtitle_4'),
+      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 5,
+      title: t('pick.title_5'),
+      subtitle: t('pick.subtitle_5'),
+      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 6,
+      title: t('pick.title_6'),
+      subtitle: t('pick.subtitle_6'),
+      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 7,
+      title: t('pick.title_7'),
+      subtitle: t('pick.subtitle_7'),
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 8,
+      title: t('pick.title_8'),
+      subtitle: t('pick.subtitle_8'),
+      image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 9,
+      title: t('pick.title_9'),
+      subtitle: t('pick.subtitle_9'),
+      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
+      category: 'PICK'
+    },
+    {
+      id: 10,
+      title: t('pick.title_10'),
+      subtitle: t('pick.subtitle_10'),
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop',
+      category: 'PICK'
+    }
+  ]
+
+  // 언어가 변경될 때마다 데이터를 다시 생성하기 위해 useEffect 사용
+  useEffect(() => {
+    // accommodationData가 변경되면 currentIndex를 0으로 리셋
+    setCurrentIndex(0)
+  }, [t])
 
   useEffect(() => {
     if (!isAutoPlay) return
@@ -242,7 +253,7 @@ const AccommodationSlider: React.FC = () => {
     <SliderContainer>
       <LeftPanel>
         <ContentSection>
-          <TextContainer currentIndex={currentIndex}>
+          <TextContainer currentIndex={currentIndex} totalSlides={accommodationData.length}>
             {accommodationData.map((accommodation, index) => (
               <TextSlide key={accommodation.id}>
                 <Category>{accommodation.category}</Category>
@@ -265,9 +276,9 @@ const AccommodationSlider: React.FC = () => {
       </LeftPanel>
 
       <RightPanel>
-        <SlideContainer currentIndex={currentIndex}>
+        <SlideContainer currentIndex={currentIndex} totalSlides={accommodationData.length}>
           {accommodationData.map((accommodation, index) => (
-            <Slide key={accommodation.id}>
+            <Slide key={accommodation.id} totalSlides={accommodationData.length}>
               <SlideImage 
                 imageUrl={accommodation.image} 
                 onClick={() => handleSlideClick(accommodation.id)}
