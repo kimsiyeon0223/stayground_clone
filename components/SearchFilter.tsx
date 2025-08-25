@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 // 날짜 관련 유틸리티 함수들
@@ -310,6 +311,7 @@ const CounterValue = styled.span`
 `
 
 const SearchFilter: React.FC = () => {
+  const router = useRouter()
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false)
   const [isDateModalOpen, setIsDateModalOpen] = useState(false)
   const [isPeopleModalOpen, setIsPeopleModalOpen] = useState(false)
@@ -592,7 +594,11 @@ const SearchFilter: React.FC = () => {
             </CounterContainer>
           </PeopleSection>
           
-          <ApplyButton onClick={() => setIsPeopleModalOpen(false)}>
+          <ApplyButton onClick={() => {
+            setIsPeopleModalOpen(false)
+            // 모든 선택이 완료되면 /stay 페이지로 이동
+            router.push('/stay')
+          }}>
             적용
           </ApplyButton>
         </PeopleModal>
