@@ -14,7 +14,7 @@ interface Accommodation {
 }
 
 interface AccommodationGridProps {
-  accommodationData: Accommodation[]
+  accommodationData?: Accommodation[]
   onLoadMore: () => void
   hasMore: boolean
   isLoading: boolean
@@ -44,7 +44,7 @@ const LoadingSpinner = styled.div`
 `
 
 const AccommodationGridComponent: React.FC<AccommodationGridProps> = ({
-  accommodationData,
+  accommodationData = [],
   onLoadMore,
   hasMore,
   isLoading
@@ -111,7 +111,7 @@ const AccommodationGridComponent: React.FC<AccommodationGridProps> = ({
   return (
     <>
       <AccommodationGridContainer>
-        {accommodationData.map((accommodation, index) => (
+        {accommodationData?.map((accommodation, index) => (
           <AnimatedCard
             key={accommodation.id}
             className="accommodation-card"
