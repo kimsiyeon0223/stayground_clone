@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AccommodationSlider from '../components/AccommodationSlider'
@@ -218,6 +219,7 @@ const MagazineTitle = styled.h3`
 `
 
 const Home = () => {
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [visibleSections, setVisibleSections] = React.useState({
     onlyStayground: false,
@@ -227,6 +229,22 @@ const Home = () => {
     promotion: false,
     magazine: false
   })
+
+  const handleStayClick = () => {
+    router.push('/stay')
+  }
+
+  const handleEarlybirdClick = () => {
+    router.push('/earlybird')
+  }
+
+  const handlePromotionClick = () => {
+    router.push('/promotion')
+  }
+
+  const handleMagazineClick = () => {
+    router.push('/magazine')
+  }
 
   // 스크롤 이벤트 핸들러
   React.useEffect(() => {
@@ -315,7 +333,7 @@ const Home = () => {
         <div data-section="onlyStayground">
           <SectionHeader isVisible={visibleSections.onlyStayground}>
             <SectionTitle>ONLY STAYGROUND</SectionTitle>
-            <ViewAllButton>전체보기 &gt;</ViewAllButton>
+            <ViewAllButton onClick={handleStayClick} style={{ cursor: 'pointer' }}>전체보기 &gt;</ViewAllButton>
           </SectionHeader>
           <div style={{
             opacity: visibleSections.onlyStayground ? 1 : 0,
@@ -339,7 +357,7 @@ const Home = () => {
         <div data-section="earlybird">
           <SectionHeader isVisible={visibleSections.earlybird}>
             <SectionTitle>EARLYBIRD</SectionTitle>
-            <ViewAllButton>전체보기 &gt;</ViewAllButton>
+            <ViewAllButton onClick={handleEarlybirdClick} style={{ cursor: 'pointer' }}>전체보기 &gt;</ViewAllButton>
           </SectionHeader>
           <div style={{
             padding: '0 210px',
@@ -354,7 +372,7 @@ const Home = () => {
         <div data-section="checkInTravel">
           <SectionHeader isVisible={visibleSections.checkInTravel}>
             <SectionTitle>CHECK IN TRAVEL</SectionTitle>
-            <ViewAllButton>전체보기 &gt;</ViewAllButton>
+            <ViewAllButton onClick={handleStayClick} style={{ cursor: 'pointer' }}>전체보기 &gt;</ViewAllButton>
           </SectionHeader>
           <div style={{
             opacity: visibleSections.checkInTravel ? 1 : 0,
@@ -371,7 +389,7 @@ const Home = () => {
           <PromotionSection isVisible={visibleSections.promotion}>
             <PromotionSectionHeader isVisible={visibleSections.promotion}>
               <PromotionSectionTitle>PROMOTION</PromotionSectionTitle>
-              <ViewAllButton>전체보기 &gt;</ViewAllButton>
+              <ViewAllButton onClick={handlePromotionClick} style={{ cursor: 'pointer' }}>전체보기 &gt;</ViewAllButton>
             </PromotionSectionHeader>
             <div style={{
               opacity: visibleSections.promotion ? 1 : 0,
@@ -387,7 +405,7 @@ const Home = () => {
           <MagazineSection isVisible={visibleSections.magazine}>
             <MagazineHeader isVisible={visibleSections.magazine}>
               <MagazineSectionTitle>MAGAZINE</MagazineSectionTitle>
-              <ViewAllButton>전체보기 &gt;</ViewAllButton>
+              <ViewAllButton onClick={handleMagazineClick} style={{ cursor: 'pointer' }}>전체보기 &gt;</ViewAllButton>
             </MagazineHeader>
             <div style={{
               opacity: visibleSections.magazine ? 1 : 0,

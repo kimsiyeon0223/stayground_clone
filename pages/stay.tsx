@@ -591,16 +591,16 @@ const StayPage = () => {
   const [activeSearchSection, setActiveSearchSection] = useState<string | null>(null)
   const [showLocationModal, setShowLocationModal] = useState(false)
   const [showCalendarModal, setShowCalendarModal] = useState(false)
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 7, 1)) // 2025년 8월
+  const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDates, setSelectedDates] = useState<{ checkin: Date | null; checkout: Date | null }>({
-    checkin: new Date(2025, 7, 6), // 2025년 8월 6일
-    checkout: new Date(2025, 7, 8) // 2025년 8월 8일
+    checkin: null,
+    checkout: null
   })
   const [isSelectingCheckout, setIsSelectingCheckout] = useState(false)
-  const [selectedLocation, setSelectedLocation] = useState<string | null>('서울')
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [showPeopleModal, setShowPeopleModal] = useState(false)
   const [peopleCount, setPeopleCount] = useState({
-    adults: 2,
+    adults: 0,
     children: 0,
     infants: 0
   })
@@ -660,6 +660,27 @@ const StayPage = () => {
       }
     }
   }, [hasMore, isLoading])
+
+  // 페이지 로드 시 상태 초기화
+  useEffect(() => {
+    // 모든 검색 필터 상태를 초기화
+    setSelectedLocation(null)
+    setSelectedDates({
+      checkin: null,
+      checkout: null
+    })
+    setPeopleCount({
+      adults: 0,
+      children: 0,
+      infants: 0
+    })
+    setActiveSearchSection(null)
+    setShowLocationModal(false)
+    setShowCalendarModal(false)
+    setShowPeopleModal(false)
+    setSelectedAmenities([])
+    setSelectedSort(null)
+  }, [])
 
   // 카드 애니메이션 observer 설정
   useEffect(() => {
