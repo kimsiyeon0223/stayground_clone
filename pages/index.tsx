@@ -4,6 +4,8 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import AccommodationSlider from '../components/AccommodationSlider'
 import AccommodationGrid from '../components/AccommodationGrid'
+import HomeAccommodationGrid from '../components/HomeAccommodationGrid'
+import OnlyStaygroundGrid from '../components/OnlyStaygroundGrid'
 import PromotionCards from '../components/PromotionCards'
 import styled from 'styled-components'
 import ImageOverlay from '../components/ImageOverlay'
@@ -289,7 +291,127 @@ const Home = () => {
       observer.disconnect()
     }
   }, [])
-  // MAGAZINE 섹션 데이터
+  // 홈페이지용 더미 숙소 데이터 (ONLY STAYGROUND용)
+  const homeAccommodationData = [
+    {
+      id: 1,
+      name: '느린미학',
+      location: '경상북도 경주시',
+      capacity: '기준 2인(최대4인)',
+      price: '330,000원~',
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 2,
+      name: '달리야드',
+      location: '제주도 서귀포시',
+      capacity: '기준 4인(최대4인)',
+      price: '350,000원~',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 3,
+      name: '누운 섶',
+      location: '제주도 제주시',
+      capacity: '기준 2인(최대6인)',
+      price: '390,000원',
+      image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 4,
+      name: '그리드 제주',
+      location: '경기도 가평군',
+      capacity: '기준 2인(최대4인)',
+      price: '280,000원~',
+      image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -15%'
+    },
+    {
+      id: 5,
+      name: '서와정',
+      location: '강원도 평창군',
+      capacity: '기준 4인(최대6인)',
+      price: '420,000원~',
+      image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -10%'
+    },
+    {
+      id: 6,
+      name: '조각밤',
+      location: '충청남도 태안군',
+      capacity: '기준 2인(최대4인)',
+      price: '310,000원~',
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+      hasDeal: false
+    }
+  ]
+
+  // CHECK IN TRAVEL용 더미 숙소 데이터 (6개)
+  const checkInTravelData = [
+    {
+      id: 7,
+      name: '숲속의 집',
+      location: '전라남도 여수시',
+      capacity: '기준 3인(최대5인)',
+      price: '380,000원~',
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -20%'
+    },
+    {
+      id: 8,
+      name: '바다뷰 펜션',
+      location: '경상남도 거제시',
+      capacity: '기준 4인(최대6인)',
+      price: '450,000원~',
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 9,
+      name: '산중턱 별장',
+      location: '강원도 강릉시',
+      capacity: '기준 2인(최대4인)',
+      price: '520,000원~',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -12%'
+    },
+    {
+      id: 10,
+      name: '도시의 오아시스',
+      location: '충청북도 단양군',
+      capacity: '기준 3인(최대5인)',
+      price: '290,000원~',
+      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 11,
+      name: '전원생활',
+      location: '전라북도 전주시',
+      capacity: '기준 4인(최대6인)',
+      price: '360,000원~',
+      image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -18%'
+    },
+    {
+      id: 12,
+      name: '힐링 스테이',
+      location: '경상북도 안동시',
+      capacity: '기준 2인(최대4인)',
+      price: '340,000원~',
+      image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop',
+      hasDeal: false
+    }
+  ]
+
   const magazineData = [
     {
       id: 1,
@@ -339,7 +461,7 @@ const Home = () => {
             transform: `translateY(${visibleSections.onlyStayground ? 0 : '50px'})`,
             transition: 'all 0.8s ease'
           }}>
-            <AccommodationGrid />
+            <OnlyStaygroundGrid accommodationData={homeAccommodationData} />
           </div>
         </div>
         
@@ -378,9 +500,7 @@ const Home = () => {
             transform: `translateY(${visibleSections.checkInTravel ? 0 : '50px'})`,
             transition: 'all 0.8s ease'
           }}>
-            <AccommodationGrid />
-            <div style={{padding: '0 0 30px 0 '}} />
-            <AccommodationGrid />
+            <HomeAccommodationGrid accommodationData={checkInTravelData} />
           </div>
         </div>
         
