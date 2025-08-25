@@ -26,6 +26,12 @@ const PromoBanner = styled.div`
   padding: 12px 0;
   font-size: 14px;
   font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: #333;
+  }
 `
 
 const MainHeader = styled.div<HeaderProps>`
@@ -248,11 +254,15 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = fals
     setIsLanguageModalVisible(false)
   }
 
+  const handlePromoClick = () => {
+    router.push('/promotion/6')
+  }
+
 
 
   return (
     <HeaderContainer isScrolled={isScrolled} isDetailPage={isDetailPage}>
-      <PromoBanner>
+      <PromoBanner onClick={handlePromoClick}>
         썸머 페스타 2만 원 쿠폰 받기
       </PromoBanner>
       
