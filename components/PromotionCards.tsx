@@ -88,7 +88,7 @@ const CallToAction = styled.a`
 const promotionData = [
   {
     id: 4,
-    title: '보스케 썸머 프로모션',
+    title: '느린미학 썸머 프로모션',
     description: '기간 내 숙박 시 10% 할인',
     callToAction: '예약하기 >',
     dayBadge: 'D-11',
@@ -96,7 +96,7 @@ const promotionData = [
   },
   {
     id: 5,
-    title: '조각밤 9월 프로모션',
+    title: '달리야드 9월 프로모션',
     description: '기간 내 평일 숙박 시 10% 할인',
     callToAction: '예약하기 >',
     dayBadge: 'D-41',
@@ -104,7 +104,7 @@ const promotionData = [
   },
   {
     id: 6,
-    title: '스테이그라운드 썸머 페스타',
+    title: '누운 섶 썸머 페스타',
     description: '여름 휴가를 준비하는 여러분에게 2만원 쿠폰을 선물합니다!',
     callToAction: '더보기 >',
     dayBadge: 'D-11',
@@ -116,7 +116,15 @@ const PromotionCards: React.FC = () => {
   const router = useRouter()
 
   const handleCardClick = (promotionId: number) => {
-    router.push(`/promotion/${promotionId}`)
+    // 프로모션 ID에 따라 해당하는 숙소 상세 페이지로 이동
+    const accommodationMapping: { [key: number]: number } = {
+      4: 1, // 보스케 썸머 프로모션 -> 숙소 ID 1
+      5: 2, // 조각밤 9월 프로모션 -> 숙소 ID 2
+      6: 3  // 스테이그라운드 썸머 페스타 -> 숙소 ID 3
+    }
+    
+    const accommodationId = accommodationMapping[promotionId] || 1
+    router.push(`/accommodation/${accommodationId}`)
   }
 
   return (
