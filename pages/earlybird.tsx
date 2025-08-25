@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -59,6 +60,12 @@ const InquiryButton = styled.button`
 `
 
 const EarlybirdPage = () => {
+  const router = useRouter()
+
+  const handleEarlybirdClick = () => {
+    router.push('/earlybird/1')
+  }
+
   return (
     <Container>
       <Header isScrolled={true} />
@@ -67,7 +74,9 @@ const EarlybirdPage = () => {
         <ContentWrapper>
           <EarlybirdSection>
             <SectionTitle>EARLYBIRD</SectionTitle>
-            <ImageOverlay />
+            <div onClick={handleEarlybirdClick} style={{ cursor: 'pointer' }}>
+              <ImageOverlay />
+            </div>
           </EarlybirdSection>
         </ContentWrapper>
       </MainContent>
