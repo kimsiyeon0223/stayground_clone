@@ -509,9 +509,9 @@ const RoomInfoInquiryButton = styled.button`
   background: white;
   color: #333;
   border: none;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 25px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -1066,34 +1066,208 @@ const BackButton = styled.button`
   }
 `
 
-// 더미 데이터
 const accommodationData = {
   1: {
     id: 1,
-    name: '바다가 보이는 아름다운 펜션',
-    location: '제주도 서귀포시',
-    description: '제주도의 아름다운 바다를 한눈에 볼 수 있는 프리미엄 펜션입니다. 넓은 테라스와 최신 시설을 갖춘 객실에서 편안한 휴식을 즐기실 수 있습니다.',
-    price: 150000,
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '바베큐 시설', '수영장', '조식 제공', '애완동물 동반 가능']
+    name: '느린미학',
+    location: '경상북도 경주시',
+    description: '느린미학은 경주의 역사와 문화를 담은 아름다운 숙소입니다. 전통과 현대가 조화를 이루는 공간에서 특별한 휴식을 경험하실 수 있습니다.',
+    price: 330000,
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '정원', '차 시연', '문화 체험'],
+    mapUrl: 'https://map.kakao.com/link/map/느린미학,35.8428,129.2117',
+    roomInfo: {
+      capacity: '2명(최대 4명)',
+      checkIn: '15:00',
+      checkOut: '11:00',
+      area: '65.8m²',
+      spaces: '침실(1), 화장실(2), 거실(1), 주방(1)',
+      bedTypes: '퀸(1), 싱글(1)'
+    }
   },
   2: {
     id: 2,
-    name: '산속의 조용한 게스트하우스',
-    location: '강원도 평창군',
-    description: '깊은 산속에서 자연과 함께하는 조용한 게스트하우스입니다. 신선한 공기와 아름다운 자연 경관을 만끽하실 수 있습니다.',
-    price: 80000,
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '주차 가능', '등산로', '캠프파이어', '조식 제공', '자전거 대여']
+    name: '달리야드',
+    location: '제주도 서귀포시',
+    description: '달리야드는 제주의 아름다운 자연 속에서 편안한 휴식을 제공하는 프리미엄 숙소입니다. 바다와 산을 동시에 감상할 수 있는 특별한 공간입니다.',
+    price: 350000,
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '바베큐 시설', '수영장', '조식 제공'],
+    mapUrl: 'https://map.kakao.com/link/map/달리야드,33.2541,126.5601'
   },
   3: {
     id: 3,
-    name: '도시 한가운데 럭셔리 호텔',
-    location: '서울시 강남구',
-    description: '도시의 중심에서 편리함과 럭셔리를 동시에 경험할 수 있는 프리미엄 호텔입니다. 최고급 서비스와 시설을 제공합니다.',
-    price: 300000,
+    name: '누운 섶',
+    location: '제주도 제주시',
+    description: '누운 섶은 제주의 전통과 현대가 만나는 독특한 숙소입니다. 자연 속에서 편안한 휴식을 즐기실 수 있는 공간을 제공합니다.',
+    price: 390000,
+    image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '정원', '차 시연', '문화 체험'],
+    mapUrl: 'https://map.kakao.com/link/map/누운 섶,33.4996,126.5312'
+  },
+  4: {
+    id: 4,
+    name: '그리드 제주',
+    location: '경기도 가평군',
+    description: '그리드 제주는 현대적인 디자인과 편안함이 조화를 이루는 숙소입니다. 깔끔한 라인과 미니멀한 공간에서 특별한 휴식을 경험하세요.',
+    price: 280000,
+    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '미니멀 디자인', '테라스', '커피머신', '스마트홈'],
+    mapUrl: 'https://map.kakao.com/link/map/그리드 제주,37.8315,127.5095'
+  },
+  5: {
+    id: 5,
+    name: '서와정',
+    location: '강원도 평창군',
+    description: '서와정은 전통 한옥의 아름다움을 현대적으로 재해석한 프리미엄 숙소입니다. 자연과 조화를 이루는 공간에서 평화로운 시간을 보내세요.',
+    price: 420000,
+    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '온돌', '정원', '차 시연'],
+    mapUrl: 'https://map.kakao.com/link/map/서와정,37.3745,128.3905'
+  },
+  6: {
+    id: 6,
+    name: '조각밤',
+    location: '충청남도 태안군',
+    description: '조각밤은 바다와 함께하는 특별한 숙소입니다. 아름다운 해변과 조용한 밤하늘을 감상할 수 있는 로맨틱한 공간을 제공합니다.',
+    price: 310000,
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '해변 접근', '바베큐 시설', '야외 테라스']
+  },
+  7: {
+    id: 7,
+    name: '숲속의 집',
+    location: '전라남도 여수시',
+    description: '숲속의 집은 깊은 숲 속에서 자연과 함께하는 힐링 숙소입니다. 신선한 공기와 아름다운 자연 경관을 만끽하실 수 있습니다.',
+    price: 380000,
     image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
-    amenities: ['무료 Wi-Fi', '발렛파킹', '스파', '피트니스센터', '레스토랑', '룸서비스']
+    amenities: ['무료 Wi-Fi', '주차 가능', '숲뷰', '등산로', '캠프파이어', '자전거 대여']
+  },
+  8: {
+    id: 8,
+    name: '바다뷰 펜션',
+    location: '경상남도 거제시',
+    description: '바다뷰 펜션은 아름다운 바다를 한눈에 볼 수 있는 프리미엄 펜션입니다. 넓은 테라스와 최신 시설을 갖춘 객실에서 편안한 휴식을 즐기실 수 있습니다.',
+    price: 450000,
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '수영장', '바베큐 시설', '조식 제공']
+  },
+  9: {
+    id: 9,
+    name: '산중턱 별장',
+    location: '강원도 강릉시',
+    description: '산중턱 별장은 산의 정상에서 아름다운 경관을 감상할 수 있는 럭셔리 별장입니다. 프리미엄 서비스와 최고급 시설을 제공합니다.',
+    price: 520000,
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '발렛파킹', '산뷰', '스파', '피트니스센터', '레스토랑']
+  },
+  10: {
+    id: 10,
+    name: '도시의 오아시스',
+    location: '충청북도 단양군',
+    description: '도시의 오아시스는 도시 한가운데에서 편안한 휴식을 제공하는 특별한 숙소입니다. 현대적이면서도 따뜻한 분위기를 연출합니다.',
+    price: 290000,
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '시티뷰', '피트니스센터', '카페', '스마트홈']
+  },
+  11: {
+    id: 11,
+    name: '전원생활',
+    location: '전라북도 전주시',
+    description: '전원생활은 전주의 전통과 현대가 만나는 특별한 숙소입니다. 한옥의 아름다움과 현대적인 편의시설을 모두 경험하실 수 있습니다.',
+    price: 360000,
+    image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '전통 한옥', '온돌', '정원', '문화 체험']
+  },
+  12: {
+    id: 12,
+    name: '힐링 스테이',
+    location: '경상북도 안동시',
+    description: '힐링 스테이는 안동의 아름다운 자연 속에서 편안한 휴식을 제공하는 숙소입니다. 전통과 현대가 조화를 이루는 공간입니다.',
+    price: 340000,
+    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '산뷰', '정원', '차 시연', '문화 체험']
+  },
+  13: {
+    id: 13,
+    name: '감성숙소',
+    location: '제주도 서귀포시',
+    description: '감성숙소는 제주의 아름다운 자연과 감성적인 분위기를 담은 특별한 숙소입니다. 로맨틱한 분위기에서 특별한 추억을 만드세요.',
+    price: 410000,
+    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '로맨틱 데코', '야외 테라스', '조식 제공']
+  },
+  14: {
+    id: 14,
+    name: '평화로운 휴식',
+    location: '강원도 춘천시',
+    description: '평화로운 휴식은 춘천의 아름다운 자연 속에서 편안한 휴식을 제공하는 숙소입니다. 조용하고 평화로운 분위기에서 힐링하세요.',
+    price: 320000,
+    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '호수뷰', '정원', '등산로', '자전거 대여']
+  },
+  15: {
+    id: 15,
+    name: '자연 속 숙소',
+    location: '충청남도 공주시',
+    description: '자연 속 숙소는 공주의 아름다운 자연과 함께하는 특별한 숙소입니다. 자연과 조화를 이루는 공간에서 편안한 휴식을 경험하세요.',
+    price: 480000,
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '숲뷰', '정원', '캠프파이어', '자전거 대여']
+  },
+  16: {
+    id: 16,
+    name: '힐링 펜션',
+    location: '전라남도 순천시',
+    description: '힐링 펜션은 순천만의 아름다운 자연 속에서 편안한 휴식을 제공하는 펜션입니다. 자연과 함께하는 특별한 경험을 제공합니다.',
+    price: 370000,
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '만뷰', '정원', '바베큐 시설', '조식 제공']
+  },
+  17: {
+    id: 17,
+    name: '산악 휴양지',
+    location: '경상남도 통영시',
+    description: '산악 휴양지는 통영의 아름다운 산과 바다를 동시에 감상할 수 있는 특별한 숙소입니다. 자연과 함께하는 프리미엄 휴양지입니다.',
+    price: 390000,
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '산뷰', '오션뷰', '등산로', '수영장']
+  },
+  18: {
+    id: 18,
+    name: '바다 근처 숙소',
+    location: '강원도 속초시',
+    description: '바다 근처 숙소는 속초의 아름다운 바다를 한눈에 볼 수 있는 프리미엄 숙소입니다. 바다와 함께하는 특별한 휴식을 경험하세요.',
+    price: 550000,
+    image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '오션뷰', '해변 접근', '수영장', '바베큐 시설']
+  },
+  19: {
+    id: 19,
+    name: '보스케',
+    location: '제주도 제주시',
+    description: '보스케는 제주의 아름다운 자연 속에서 현대적인 편안함을 제공하는 특별한 숙소입니다. 미니멀한 디자인과 최신 시설을 갖추고 있습니다.',
+    price: 480000,
+    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '미니멀 디자인', '테라스', '커피머신', '스마트홈']
+  },
+  20: {
+    id: 20,
+    name: '마당과 정원',
+    location: '경기도 포천시',
+    description: '마당과 정원은 포천의 아름다운 자연 속에서 전통과 현대가 조화를 이루는 특별한 숙소입니다. 넓은 마당과 아름다운 정원을 제공합니다.',
+    price: 320000,
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '정원', '마당', '바베큐 시설', '자전거 대여']
+  },
+  21: {
+    id: 21,
+    name: '객실 내부',
+    location: '충청북도 제천시',
+    description: '객실 내부는 제천의 아름다운 자연 속에서 편안한 휴식을 제공하는 특별한 숙소입니다. 현대적이면서도 따뜻한 분위기를 연출합니다.',
+    price: 410000,
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=500&fit=crop',
+    amenities: ['무료 Wi-Fi', '주차 가능', '산뷰', '테라스', '커피머신', '스마트홈']
   }
 }
 
@@ -1253,11 +1427,6 @@ const AccommodationDetailPage = () => {
                 </BookingItem>
               </BookingInfo>
             </BookingBar>
-            
-            <InquiryButton>
-              <span>문의</span>
-              <span>하기</span>
-            </InquiryButton>
           </FullScreenImage>
           
                     <RoomDetailContainer>
@@ -1270,7 +1439,7 @@ const AccommodationDetailPage = () => {
                   </RoomImage>
                   <RoomInfo>
                     <RoomHeader>
-                      <RoomName>뭇별(본채+별채)</RoomName>
+                      <RoomName>{accommodation.name}</RoomName>
                       <RoomCapacity>기준 2인 (최대 6인)</RoomCapacity>
                       <RoomDetails>침실(2) 화장실(3) 거실(1) 주방(1)</RoomDetails>
                       <RoomTimes>체크인 15:00 - 체크아웃 11:00</RoomTimes>
@@ -1279,10 +1448,10 @@ const AccommodationDetailPage = () => {
                       <PriceInfo>
                         <OriginalPrice>
                           <DiscountLabel>5%</DiscountLabel>
-                          520,000원
+                          {accommodation.price.toLocaleString()}원
                         </OriginalPrice>
                         <DiscountPrice>
-                          494,000원
+                          {(accommodation.price * 0.95).toLocaleString()}원
                           <PriceUnit>/ 1박</PriceUnit>
                         </DiscountPrice>
                       </PriceInfo>
@@ -1472,13 +1641,13 @@ const AccommodationDetailPage = () => {
               margin: '70px 210px 0 210px' 
             }} />
               <RoomInfoDetails>
-                <RoomInfoName>뭇별(본채+별채)</RoomInfoName>
+                <RoomInfoName>{accommodation.name}</RoomInfoName>
                 <RoomInfoList>
-                  <RoomInfoItem>기준 인원 : 2명(최대 6명)</RoomInfoItem>
-                  <RoomInfoItem>체크인 : 15:00 / 체크아웃 11:00</RoomInfoItem>
-                  <RoomInfoItem>객실 면적 : 92.25m²</RoomInfoItem>
-                  <RoomInfoItem>객실 공간 : 침실(2), 화장실(3), 거실(1), 주방(1)</RoomInfoItem>
-                  <RoomInfoItem>침대 유형: 슈퍼싱글(1), 퀸(2)</RoomInfoItem>
+                  <RoomInfoItem>기준 인원 : {(accommodation as any).roomInfo?.capacity || '2명(최대 6명)'}</RoomInfoItem>
+                  <RoomInfoItem>체크인 : {(accommodation as any).roomInfo?.checkIn || '15:00'} / 체크아웃 {(accommodation as any).roomInfo?.checkOut || '11:00'}</RoomInfoItem>
+                  <RoomInfoItem>객실 면적 : {(accommodation as any).roomInfo?.area || '92.25m²'}</RoomInfoItem>
+                  <RoomInfoItem>객실 공간 : {(accommodation as any).roomInfo?.spaces || '침실(2), 화장실(3), 거실(1), 주방(1)'}</RoomInfoItem>
+                  <RoomInfoItem>침대 유형: {(accommodation as any).roomInfo?.bedTypes || '슈퍼싱글(1), 퀸(2)'}</RoomInfoItem>
                 </RoomInfoList>
               </RoomInfoDetails>
               <hr style={{ 
@@ -1699,7 +1868,7 @@ const AccommodationDetailPage = () => {
                 <>
                   <ContactInfo>
                     <ContactItem>
-                      주소: 강원특별자치도 삼척시 근덕면 부남해변길 4 (부남리)
+                      주소: {accommodation.location}
                     </ContactItem>
                     <ContactItem>
                       연락처: 010-2211-2143
@@ -1709,26 +1878,26 @@ const AccommodationDetailPage = () => {
                     </ContactItem>
                   </ContactInfo>
                   
-                                     <MapContainer>
-                     <iframe
-                       src="https://map.kakao.com/link/map/강원특별자치도 삼척시 근덕면 부남해변길 4,37.4417,129.1647"
-                       width="100%"
-                       height="400"
-                       frameBorder="0"
-                       scrolling="no"
-                       marginHeight={0}
-                       marginWidth={0}
-                       loading="lazy"
-                       style={{ 
-                         pointerEvents: 'auto',
-                         border: 'none',
-                         contain: 'layout',
-                         isolation: 'isolate',
-                         transform: 'translateZ(0)',
-                         backfaceVisibility: 'hidden'
-                       }}
-                     />
-                   </MapContainer>
+                  <MapContainer>
+                    <iframe
+                      src={(accommodation as any).mapUrl || `https://map.kakao.com/link/map/${accommodation.name},37.5665,126.9780`}
+                      width="100%"
+                      height="400"
+                      frameBorder="0"
+                      scrolling="no"
+                      marginHeight={0}
+                      marginWidth={0}
+                      loading="lazy"
+                      style={{ 
+                        pointerEvents: 'auto',
+                        border: 'none',
+                        contain: 'layout',
+                        isolation: 'isolate',
+                        transform: 'translateZ(0)',
+                        backfaceVisibility: 'hidden'
+                      }}
+                    />
+                  </MapContainer>
                 </>
               )}
               
@@ -1919,7 +2088,7 @@ const AccommodationDetailPage = () => {
                
                {activeTab === '요금정책' && (
                  <PricingContent>
-                   <PricingTitle>뭇별(본채+별채)</PricingTitle>
+                   <PricingTitle>{accommodation.name}</PricingTitle>
                    
                    <PricingSection>
                      <PricingSubTitle>기본 요금</PricingSubTitle>
@@ -1930,8 +2099,8 @@ const AccommodationDetailPage = () => {
                        </PricingTableHeader>
                        <PricingTableBody>
                          <PricingTableRow>
-                           <PricingTableCell>520,000원</PricingTableCell>
-                           <PricingTableCell>570,000원~</PricingTableCell>
+                           <PricingTableCell>{accommodation.price.toLocaleString()}원</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 50000).toLocaleString()}원~</PricingTableCell>
                          </PricingTableRow>
                        </PricingTableBody>
                      </PricingTable>
@@ -1948,28 +2117,28 @@ const AccommodationDetailPage = () => {
                        <PricingTableBody>
                          <PricingTableRow>
                            <PricingTableCell>준성수기</PricingTableCell>
-                           <PricingTableCell>620,000원</PricingTableCell>
-                           <PricingTableCell>680,000원~</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 100000).toLocaleString()}원</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
                            <PricingTableCell>준성수기</PricingTableCell>
-                           <PricingTableCell>620,000원</PricingTableCell>
-                           <PricingTableCell>680,000원~</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 100000).toLocaleString()}원</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
                            <PricingTableCell>성수기</PricingTableCell>
-                           <PricingTableCell>670,000원</PricingTableCell>
-                           <PricingTableCell>730,000원~</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 200000).toLocaleString()}원~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
                            <PricingTableCell>성수기</PricingTableCell>
-                           <PricingTableCell>670,000원</PricingTableCell>
-                           <PricingTableCell>730,000원~</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 150000).toLocaleString()}원</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 200000).toLocaleString()}원~</PricingTableCell>
                          </PricingTableRow>
                          <PricingTableRow>
                            <PricingTableCell>극성수기</PricingTableCell>
-                           <PricingTableCell>800,000원</PricingTableCell>
-                           <PricingTableCell>800,000원~</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 280000).toLocaleString()}원</PricingTableCell>
+                           <PricingTableCell>{(accommodation.price + 280000).toLocaleString()}원~</PricingTableCell>
                          </PricingTableRow>
                        </PricingTableBody>
                      </PricingTable>

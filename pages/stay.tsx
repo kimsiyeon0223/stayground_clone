@@ -79,30 +79,48 @@ const IconGrid = styled.div`
   margin-top: 40px;
 `
 
-const IconItem = styled.div`
+const IconItem = styled.div<{ isSelected?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   padding: 15px 10px;
   border-radius: 8px;
+  transition: all 0.3s ease;
 `
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.div<{ isSelected?: boolean }>`
   width: 52px;
   height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 8px;
-width: fit-content;
+  width: fit-content;
+  color: ${props => props.isSelected ? '#333' : '#999'};
+  transition: color 0.3s ease;
 `
 
-const IconLabel = styled.div`
+const IconLabel = styled.div<{ isSelected?: boolean }>`
   font-size: 12px;
-  color: #333;
-  width: fit-content;
-  font-weight: 500;
+  font-weight: ${props => props.isSelected ? '600' : '500'};
+  color: ${props => props.isSelected ? '#333' : '#999'};
+  text-align: center;
+  position: relative;
+  
+  ${props => props.isSelected && `
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 2px;
+      background-color: #333;
+      border-radius: 1px;
+    }
+  `}
 `
 
 const LocationModal = styled.div`
@@ -598,6 +616,7 @@ const StayPage = () => {
   })
   const [isSelectingCheckout, setIsSelectingCheckout] = useState(false)
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
+  const [selectedIcon, setSelectedIcon] = useState<number>(0) // 0: 모든 스테이 (기본 선택)
   const [showPeopleModal, setShowPeopleModal] = useState(false)
   const [peopleCount, setPeopleCount] = useState({
     adults: 0,
@@ -958,6 +977,10 @@ const StayPage = () => {
     setActiveSearchSection(null)
   }
 
+  const handleIconClick = (index: number) => {
+    setSelectedIcon(index)
+  }
+
   const formatPeopleText = () => {
     const { adults, children, infants } = peopleCount
     const parts = []
@@ -1151,7 +1174,7 @@ const StayPage = () => {
     },
     {
       id: 4,
-      name: '숙소 4',
+      name: '그리드 제주',
       location: '경기도 가평군',
       capacity: '기준 2인(최대4인)',
       price: '280,000원~',
@@ -1161,7 +1184,7 @@ const StayPage = () => {
     },
     {
       id: 5,
-      name: '숙소 5',
+      name: '서와정',
       location: '강원도 평창군',
       capacity: '기준 4인(최대6인)',
       price: '420,000원~',
@@ -1171,7 +1194,7 @@ const StayPage = () => {
     },
     {
       id: 6,
-      name: '숙소 6',
+      name: '조각밤',
       location: '충청남도 태안군',
       capacity: '기준 2인(최대4인)',
       price: '310,000원~',
@@ -1291,6 +1314,35 @@ const StayPage = () => {
       price: '550,000원~',
       image: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&h=300&fit=crop',
       hasDeal: false
+    },
+    {
+      id: 19,
+      name: '보스케',
+      location: '제주도 제주시',
+      capacity: '기준 3인(최대5인)',
+      price: '480,000원~',
+      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -18%'
+    },
+    {
+      id: 20,
+      name: '마당과 정원',
+      location: '경기도 포천시',
+      capacity: '기준 2인(최대4인)',
+      price: '320,000원~',
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop',
+      hasDeal: false
+    },
+    {
+      id: 21,
+      name: '객실 내부',
+      location: '충청북도 제천시',
+      capacity: '기준 4인(최대6인)',
+      price: '410,000원~',
+      image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop',
+      hasDeal: true,
+      dealText: 'DEAL -25%'
     }
   ]
 
@@ -1447,11 +1499,15 @@ const StayPage = () => {
 
           <IconGrid>
             {iconData.map((item, index) => (
-              <IconItem key={index}>
-                <IconWrapper>
+              <IconItem 
+                key={index} 
+                isSelected={selectedIcon === index}
+                onClick={() => handleIconClick(index)}
+              >
+                <IconWrapper isSelected={selectedIcon === index}>
                   {item.icon}
                 </IconWrapper>
-                <IconLabel>{item.label}</IconLabel>
+                <IconLabel isSelected={selectedIcon === index}>{item.label}</IconLabel>
               </IconItem>
             ))}
           </IconGrid>
