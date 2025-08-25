@@ -310,7 +310,7 @@ const CounterValue = styled.span`
   background: white;
 `
 
-const SearchFilter: React.FC = () => {
+const SearchFilter = () => {
   const router = useRouter()
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false)
   const [isDateModalOpen, setIsDateModalOpen] = useState(false)
