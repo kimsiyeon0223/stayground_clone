@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-// 날짜 관련 유틸리티 함수들
 const getDaysInMonth = (year: number, month: number) => {
   return new Date(year, month, 0).getDate()
 }
@@ -27,7 +26,7 @@ const SearchBar = styled.div`
   display: flex;
   background: white;
   border: 1px solid #e0e0e0;
-  border-radius: 50px;/* padding: 12px 18px; */
+  border-radius: 50px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   align-items: center;
 `
@@ -312,6 +311,7 @@ const CounterValue = styled.span`
 
 const SearchFilter = () => {
   const router = useRouter()
+  const containerRef = useRef<HTMLDivElement>(null)
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false)
   const [isDateModalOpen, setIsDateModalOpen] = useState(false)
   const [isPeopleModalOpen, setIsPeopleModalOpen] = useState(false)
@@ -322,10 +322,26 @@ const SearchFilter = () => {
     end: null
   })
   const [peopleCount, setPeopleCount] = useState({
-    adults: 2,
+    adults: 0,
     children: 0,
     infants: 0
   })
+
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsLocationModalOpen(false)
+        setIsDateModalOpen(false)
+        setIsPeopleModalOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const locations = [
     '전체', '서울', '부산', '대구', '인천',
@@ -459,7 +475,7 @@ const SearchFilter = () => {
   }
 
   return (
-    <Container>
+    <Container ref={containerRef}>
       <SearchBar>
         <FilterSection 
           isActive={isLocationModalOpen}
@@ -544,8 +560,8 @@ const SearchFilter = () => {
             <PeopleLabel>성인</PeopleLabel>
             <CounterContainer>
               <CounterButton 
-                onClick={() => setPeopleCount(prev => ({ ...prev, adults: Math.max(1, prev.adults - 1) }))}
-                disabled={peopleCount.adults <= 1}
+                onClick={() => setPeopleCount(prev => ({ ...prev, adults: Math.max(0, prev.adults - 1) }))}
+                disabled={peopleCount.adults <= 0}
               >
                 -
               </CounterButton>
