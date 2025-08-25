@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 import SearchFilter from './SearchFilter'
 
 interface HeaderProps {
@@ -201,11 +202,16 @@ const HeaderSearchFilter = styled.div<HeaderProps>`
 `
 
 const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = false }) => {
+  const router = useRouter()
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [isLanguageModalVisible, setIsLanguageModalVisible] = React.useState(false)
   const [selectedLanguage, setSelectedLanguage] = React.useState('KOR')
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const languageTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  const handleLogoClick = () => {
+    router.push('/')
+  }
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -251,7 +257,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled = false, isDetailPage = fals
       </PromoBanner>
       
       <MainHeader isScrolled={isScrolled}>
-        <Logo isScrolled={isScrolled}>
+        <Logo isScrolled={isScrolled} onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <span className="stay">STAY</span>
           <span className="ground">GROUND.</span>
         </Logo>
