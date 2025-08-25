@@ -256,7 +256,6 @@ const PriceInfo = styled.div`
 const OriginalPrice = styled.div`
   font-size: 16px;
   color: #999;
-  text-decoration: line-through;
   margin-bottom: 4px;
   display: flex;
   align-items: center;
@@ -266,6 +265,10 @@ const OriginalPrice = styled.div`
 const DiscountLabel = styled.span`
   color: #ff4444;
   font-weight: bold;
+`
+
+const Label = styled.span`
+  text-decoration: line-through;
 `
 
 const DiscountPrice = styled.div`
@@ -1448,7 +1451,7 @@ const AccommodationDetailPage = () => {
                       <PriceInfo>
                         <OriginalPrice>
                           <DiscountLabel>5%</DiscountLabel>
-                          {accommodation.price.toLocaleString()}원
+                          <Label>{accommodation.price.toLocaleString()}원</Label>
                         </OriginalPrice>
                         <DiscountPrice>
                           {(accommodation.price * 0.95).toLocaleString()}원
