@@ -280,6 +280,13 @@ const DiscountPrice = styled.div`
   gap: 4px;
 `
 
+const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #eeeeee;
+  margin:0 0 10px 0;
+`
+
 const PriceUnit = styled.span`
   font-size: 16px;
   font-weight: normal;
@@ -1447,6 +1454,7 @@ const AccommodationDetailPage = () => {
                       <RoomDetails>침실(2) 화장실(3) 거실(1) 주방(1)</RoomDetails>
                       <RoomTimes>체크인 15:00 - 체크아웃 11:00</RoomTimes>
                     </RoomHeader>
+                    <Line />
                     <RoomPrice>
                       <PriceInfo>
                         <OriginalPrice>
