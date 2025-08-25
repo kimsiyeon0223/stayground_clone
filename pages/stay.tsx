@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import SearchBarComponent from '../components/SearchBar'
@@ -33,6 +34,26 @@ const MainTitle = styled.h1`
 
 
 const StayPage = () => {
+  const router = useRouter()
+  
+  // URL 파라미터에서 초기 필터 조건 읽기
+  const getInitialFilters = () => {
+    const { location, checkin, checkout, adults, children, infants } = router.query
+    
+    return {
+      selectedDates: {
+        checkin: checkin ? new Date(checkin as string) : null,
+        checkout: checkout ? new Date(checkout as string) : null
+      },
+      selectedLocation: location ? (location as string) : null,
+      peopleCount: {
+        adults: adults ? parseInt(adults as string) : 0,
+        children: children ? parseInt(children as string) : 0,
+        infants: infants ? parseInt(infants as string) : 0
+      }
+    }
+  }
+  
   const [selectedDates, setSelectedDates] = useState<{ checkin: Date | null; checkout: Date | null }>({
     checkin: null,
     checkout: null
@@ -302,6 +323,116 @@ const StayPage = () => {
   ]
 
   const [accommodationData, setAccommodationData] = useState(initialAccommodationData)
+  const [filteredData, setFilteredData] = useState(initialAccommodationData)
+
+  // 검색 필터링 함수
+  const filterAccommodations = () => {
+    let filtered = [...accommodationData]
+
+    // 1. 지역 필터링
+    if (selectedLocation && selectedLocation !== '전체') {
+      filtered = filtered.filter(accommodation => 
+        accommodation.location.includes(selectedLocation)
+      )
+    }
+
+    // 2. 인원 필터링
+    const totalPeople = peopleCount.adults + peopleCount.children + peopleCount.infants
+    if (totalPeople > 0) {
+      filtered = filtered.filter(accommodation => {
+        // capacity에서 최대 인원 수 추출 (예: "기준 2인(최대4인)" -> 4)
+        const maxCapacityMatch = accommodation.capacity.match(/최대(\d+)인/)
+        if (maxCapacityMatch) {
+          const maxCapacity = parseInt(maxCapacityMatch[1])
+          return maxCapacity >= totalPeople
+        }
+        return true
+      })
+    }
+
+    // 3. 날짜 필터링 (예약 가능 여부 시뮬레이션)
+    if (selectedDates.checkin && selectedDates.checkout) {
+      // 실제로는 예약 데이터베이스와 연동해야 하지만, 여기서는 랜덤하게 필터링
+      filtered = filtered.filter(() => Math.random() > 0.3) // 70% 확률로 예약 가능
+    }
+
+    // 4. 아이콘 필터링 (편의시설)
+    if (selectedIcon > 0) {
+      const iconFilters = {
+        1: 'ending_soon', // 마감 임박 할인
+        2: 'private_stay', // 단독 숙소
+        3: 'camping', // 캠핑&글램핑
+        4: 'pet_friendly', // 반려동물
+        5: 'pool', // 수영장
+        6: 'jacuzzi', // 자쿠지
+        7: 'hanok', // 한옥
+        8: 'ocean_view', // 오션뷰
+        9: 'forest_view', // 숲뷰
+        10: 'city_view', // 시티뷰
+        11: 'harbor_view', // 하버뷰
+        12: 'sauna' // 사우나
+      }
+      
+      const filterType = iconFilters[selectedIcon as keyof typeof iconFilters]
+      
+      if (filterType === 'ending_soon') {
+        filtered = filtered.filter(accommodation => accommodation.hasDeal)
+      }
+      // 다른 필터들은 실제 데이터에 해당 속성이 있어야 함
+    }
+
+    // 5. 편의시설 필터링
+    if (selectedAmenities.length > 0) {
+      // 실제로는 각 숙소의 편의시설 데이터와 비교해야 함
+      filtered = filtered.filter(() => Math.random() > 0.2) // 80% 확률로 해당 편의시설 보유
+    }
+
+    // 6. 정렬
+    if (selectedSort) {
+      switch (selectedSort) {
+        case '최신순':
+          filtered.sort((a, b) => b.id - a.id)
+          break
+        case '인기순':
+          filtered.sort(() => Math.random() - 0.5) // 랜덤 정렬
+          break
+        case '높은 가격순':
+          filtered.sort((a, b) => {
+            const priceA = parseInt(a.price.replace(/[^0-9]/g, ''))
+            const priceB = parseInt(b.price.replace(/[^0-9]/g, ''))
+            return priceB - priceA
+          })
+          break
+        case '낮은 가격순':
+          filtered.sort((a, b) => {
+            const priceA = parseInt(a.price.replace(/[^0-9]/g, ''))
+            const priceB = parseInt(b.price.replace(/[^0-9]/g, ''))
+            return priceA - priceB
+          })
+          break
+        default: // 추천순
+          // 기본 정렬 (변경 없음)
+          break
+      }
+    }
+
+    setFilteredData(filtered)
+  }
+
+  // URL 파라미터가 변경될 때 초기 필터 조건 설정
+  useEffect(() => {
+    if (router.isReady) {
+      const initialFilters = getInitialFilters()
+      setSelectedDates(initialFilters.selectedDates)
+      setSelectedLocation(initialFilters.selectedLocation)
+      setPeopleCount(initialFilters.peopleCount)
+    }
+  }, [router.isReady, router.query])
+
+  // 필터 조건이 변경될 때마다 필터링 실행
+  useEffect(() => {
+    filterAccommodations()
+  }, [selectedLocation, selectedDates, peopleCount, selectedIcon, selectedAmenities, selectedSort, accommodationData])
 
   return (
     <Container>
@@ -330,9 +461,22 @@ const StayPage = () => {
             onAmenitiesChange={setSelectedAmenities}
             onSortChange={setSelectedSort}
           />
+          
+          {/* 검색 결과 개수 표시 */}
+          {filteredData.length > 0 && (
+            <div style={{ 
+              padding: '20px 0', 
+              fontSize: '16px', 
+              color: '#666',
+              borderBottom: '1px solid #eee',
+              marginBottom: '20px'
+            }}>
+              검색 결과: <strong>{filteredData.length}</strong>개의 숙소
+            </div>
+          )}
 
           <AccommodationGridComponent
-            accommodationData={accommodationData}
+            accommodationData={filteredData}
             onLoadMore={loadMoreAccommodations}
             hasMore={hasMore}
             isLoading={isLoading}

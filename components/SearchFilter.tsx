@@ -612,8 +612,36 @@ const SearchFilter = () => {
           
           <ApplyButton onClick={() => {
             setIsPeopleModalOpen(false)
-            // 모든 선택이 완료되면 /stay 페이지로 이동
-            router.push('/stay')
+            // 선택한 조건들을 URL 파라미터로 전달하여 /stay 페이지로 이동
+            const params = new URLSearchParams()
+            
+            if (selectedLocation && selectedLocation !== '전체') {
+              params.append('location', selectedLocation)
+            }
+            
+            if (selectedDates.start) {
+              params.append('checkin', selectedDates.start.toISOString().split('T')[0])
+            }
+            
+            if (selectedDates.end) {
+              params.append('checkout', selectedDates.end.toISOString().split('T')[0])
+            }
+            
+            if (peopleCount.adults > 0) {
+              params.append('adults', peopleCount.adults.toString())
+            }
+            
+            if (peopleCount.children > 0) {
+              params.append('children', peopleCount.children.toString())
+            }
+            
+            if (peopleCount.infants > 0) {
+              params.append('infants', peopleCount.infants.toString())
+            }
+            
+            const queryString = params.toString()
+            const url = queryString ? `/stay?${queryString}` : '/stay'
+            router.push(url)
           }}>
             적용
           </ApplyButton>

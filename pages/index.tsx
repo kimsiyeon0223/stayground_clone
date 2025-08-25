@@ -83,7 +83,6 @@ const ContactButton = styled.button`
 const MainContent = styled.main`
   flex: 1;
   width: 100%;
-  /* padding-top: 100px; */
 `
 
 const SectionHeader = styled.div<{ isVisible: boolean }>`
